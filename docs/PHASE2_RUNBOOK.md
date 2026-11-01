@@ -21,6 +21,7 @@ python scripts/experiment.py --mode recent --device cuda
 python scripts/predict_future.py --device cuda
 python scripts/export_submission.py --student-id <真实学号>
 python scripts/validate_submission.py --student-id <真实学号>
+python scripts/analysis.py
 ```
 
 Smoke 测试默认是 CPU 小模型；GPU smoke 可使用 `--device cuda --small --epochs 1 --batch-size 8`。`development` 只使用最近 180 日之前的数据选模；`recent` 评估保留区域且不改动开发阶段的选择结果；`final` 使用锁定的开发结果训练并推理。Checkpoint 位于 `results/checkpoints/` 并由 `.gitignore` 排除。
