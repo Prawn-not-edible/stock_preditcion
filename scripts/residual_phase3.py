@@ -157,10 +157,13 @@ def history_dataset(raw: np.ndarray, train_end: int, val_start: int,
         raise ValueError("empty train or validation windows")
     tr_x, tr_y = samples(tr_o)
     va_x, va_y = samples(va_o)
-    train_dl = DataLoader(TensorDataset(tr_x, tr_y), batch_size=opts.batch_size, shuffle=True)
-    val_dl = DataLoader(TensorDataset(va_x, va_y), batch_size=opts.batch_size, shuffle=False)
     dev = torch.device("cuda" if opts.device == "auto" and torch.cuda.is_available()
                        else ("cpu" if opts.device == "auto" else opts.device))
+    pin_memory = dev.type == "cuda"
+    train_dl = DataLoader(TensorDataset(tr_x, tr_y), batch_size=opts.batch_size,
+                          shuffle=True, pin_memory=pin_memory)
+    val_dl = DataLoader(TensorDataset(va_x, va_y), batch_size=opts.batch_size,
+                        shuffle=False, pin_memory=pin_memory)
     seed_all(opts.seed)
     if dev.type == "cuda":
         torch.cuda.reset_peak_memory_stats(dev)
@@ -171,7 +174,7 @@ def history_dataset(raw: np.ndarray, train_end: int, val_start: int,
     for epoch in range(1, opts.epochs + 1):
         model.train(); losses = []
         for x, y in train_dl:
-            x, y = x.to(dev), y.to(dev)
+            x, y = x.to(dev, non_blocking=pin_memory), y.to(dev, non_blocking=pin_memory)
             pred = output_return(model, x)
             loss = torch.nn.functional.mse_loss(pred, y)
             if not torch.isfinite(loss):
@@ -184,7 +187,7 @@ def history_dataset(raw: np.ndarray, train_end: int, val_start: int,
         train_loss = float(np.mean(losses)); model.eval(); val_losses = []
         with torch.no_grad():
             for x, y in val_dl:
-                pred = output_return(model, x.to(dev))
+                pred = output_return(model, x.to(dev, non_blocking=pin_memory))
                 val_losses.extend(torch.nn.functional.mse_loss(pred, y.to(dev), reduction="none").mean(1).cpu().tolist())
         val_loss = float(np.mean(val_losses))
         if not math.isfinite(val_loss):
@@ -273,10 +276,11 @@ def train_final_all_history(model_name: str, raw: np.ndarray, epochs: int,
         x, _ = build_features(raw, origin, vm, vs)
         y, _ = build_target(raw, origin)
         xs.append(x); ys.append(y)
-    dl = DataLoader(TensorDataset(torch.from_numpy(np.stack(xs)), torch.from_numpy(np.stack(ys))),
-                    batch_size=opts.batch_size, shuffle=True)
     dev = torch.device("cuda" if opts.device == "auto" and torch.cuda.is_available()
                        else ("cpu" if opts.device == "auto" else opts.device))
+    pin_memory = dev.type == "cuda"
+    dl = DataLoader(TensorDataset(torch.from_numpy(np.stack(xs)), torch.from_numpy(np.stack(ys))),
+                    batch_size=opts.batch_size, shuffle=True, pin_memory=pin_memory)
     seed_all(opts.seed)
     model = make_model(model_name, small=False).to(dev)
     optimizer = torch.optim.Adam(model.parameters(), lr=opts.lr)
@@ -284,7 +288,7 @@ def train_final_all_history(model_name: str, raw: np.ndarray, epochs: int,
     for _ in range(epochs):
         model.train(); ep = []
         for x, y in dl:
-            x, y = x.to(dev), y.to(dev)
+            x, y = x.to(dev, non_blocking=pin_memory), y.to(dev, non_blocking=pin_memory)
             pred = output_return(model, x); loss = torch.nn.functional.mse_loss(pred, y)
             if not torch.isfinite(loss):
                 raise FloatingPointError("non-finite final residual loss")
@@ -567,15 +571,15 @@ def run_recent(opts, out: Path, v0_path: Path) -> None:
                     "parameter_count": fit["params"], "checkpoint": fit["checkpoint"],
                     "checkpoint_sha256": fit["checkpoint_sha256"], "locked_alpha": alpha})
                 # Fixed weights in this 20-trading-day cycle; only the known 60-row input moves.
+                dev = torch.device(opts.device if opts.device != "auto" else ("cuda" if torch.cuda.is_available() else "cpu"))
+                saved = torch.load(checkpoint, map_location="cpu", weights_only=False)
+                model_obj = make_model(model, small=False).to(dev)
+                model_obj.load_state_dict(saved["state_dict"]); model_obj.eval()
                 for origin in group:
                     vm, vs = fit["volume_mean"], fit["volume_scale"]
                     x, anchor = build_features(raw, origin, vm, vs)
-                    dev = torch.device(opts.device if opts.device != "auto" else ("cuda" if torch.cuda.is_available() else "cpu"))
-                    saved = torch.load(checkpoint, map_location="cpu", weights_only=False)
-                    model_obj = make_model(model, small=False).to(dev)
-                    model_obj.load_state_dict(saved["state_dict"]); model_obj.eval()
                     with torch.no_grad():
-                        pred_return = output_return(model_obj, torch.from_numpy(x[None]).to(dev)).cpu().numpy()[0]
+                        pred_return = output_return(model_obj, torch.from_numpy(x[None]).to(dev, non_blocking=dev.type == "cuda")).cpu().numpy()[0]
                     actual_return, target_anchor = build_target(raw, origin)
                     if not math.isclose(anchor, target_anchor, rel_tol=0, abs_tol=1e-10):
                         raise AssertionError("recent input/target anchor mismatch")
@@ -688,7 +692,7 @@ def main() -> None:
     p.add_argument("--mode", choices=["smoke", "development", "recent", "final"], required=True)
     p.add_argument("--device", default="auto")
     p.add_argument("--epochs", type=int, default=50)
-    p.add_argument("--batch-size", type=int, default=32)
+    p.add_argument("--batch-size", type=int, default=128)
     p.add_argument("--patience", type=int, default=7)
     p.add_argument("--lr", type=float, default=0.001)
     p.add_argument("--seed", type=int, default=2026)
@@ -701,6 +705,8 @@ def main() -> None:
         run_smoke(a.phase_dir / "smoke"); return
     opts = SimpleNamespace(device=a.device, epochs=a.epochs, batch_size=a.batch_size,
                            patience=a.patience, lr=a.lr, seed=a.seed)
+    if torch.cuda.is_available():
+        torch.set_float32_matmul_precision("high")
     a.phase_dir.mkdir(parents=True, exist_ok=True)
     try:
         commit = subprocess.check_output(["git", "rev-parse", "HEAD"], cwd=ROOT, text=True).strip()
@@ -722,7 +728,9 @@ def main() -> None:
         "recent_validation_trading_days": 126, "epochs": a.epochs,
         "early_stopping_patience": a.patience, "optimizer": "Adam",
         "learning_rate": a.lr, "batch_size": a.batch_size, "seed": a.seed,
-        "device": a.device, "model_configs": {"d_model": 128, "d_ff": 256,
+        "device": a.device, "cuda_float32_matmul_precision": "high" if torch.cuda.is_available() else "default",
+        "pin_memory": a.device == "cuda" or (a.device == "auto" and torch.cuda.is_available()),
+        "model_configs": {"d_model": 128, "d_ff": 256,
             "e_layers": 2, "n_heads": 4, "dropout": 0.1, "label_len": 30,
             "features": "MS", "use_norm": True},
         "phase2_v0_files": [str(a.v0_development), str(a.v0_recent)]}
