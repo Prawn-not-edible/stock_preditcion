@@ -33,9 +33,17 @@ def collect(rs) -> pd.DataFrame:
     return pd.DataFrame(rows, columns=fields)
 
 
-def is_coal(industry: str) -> bool:
+def is_coal(industry: str, code_name: str = "") -> bool:
     s = str(industry or "").strip()
-    return any(w in s for w in COAL_WORDS)
+    name = str(code_name or "").strip()
+    if "煤炭开采和洗选" in s or "煤矿" in s or "煤炭采选" in s:
+        return True
+    if "煤炭" in s and "石油" not in s and "其他燃料" not in s:
+        return True
+    # BaoStock's C25 label combines petroleum, coal and other fuels; admit only names
+    # explicitly tied to coal/coking, not every petroleum/chemical company in that class.
+    mixed_fuel = "石油" in s and ("煤炭" in s or "燃料" in s)
+    return mixed_fuel and any(w in name for w in ("煤", "焦", "炭"))
 
 
 def experiment_dates() -> list[str]:
@@ -96,7 +104,7 @@ def build_pool(out: Path, start: str = "2014-01-01", end: str = "2026-10-30",
         if not {"code", "industry"}.issubset(industries.columns):
             raise ValueError(f"query_stock_industry fields changed: {industries.columns.tolist()}")
         coal_codes={str(row.code).lower() for row in industries.itertuples()
-                    if A_SHARE.fullmatch(str(row.code).lower()) and is_coal(row.industry)}
+                    if A_SHARE.fullmatch(str(row.code).lower()) and is_coal(row.industry,getattr(row,"code_name",""))}
         candidate_codes=sorted(coal_codes | TARGETS)
         if not reuse_snapshots:
             # Query basic records per candidate; avoid the slow exchange-wide endpoint.
@@ -125,7 +133,7 @@ def build_pool(out: Path, start: str = "2014-01-01", end: str = "2026-10-30",
                 if extra in industry_history:
                     if col in industry_history: industry_history[col]=industry_history[col].fillna(industry_history[extra])
                     else: industry_history[col]=industry_history[extra]
-        coal = industries[industries.industry.map(is_coal)].copy()
+        coal = industries[[is_coal(industry,name) for industry,name in zip(industries.industry,industries.code_name)]].copy()
         coal["pool_reason"] = "BaoStock industry label matched coal/mining keyword"
         target = basic[basic.code.isin(TARGETS)].copy()
         target = target.merge(industries.drop_duplicates("code", keep="last")[industry_cols], on=[c for c in ("code", "code_name") if c in target.columns and c in industry_cols], how="left") if "industry" not in target.columns else target
