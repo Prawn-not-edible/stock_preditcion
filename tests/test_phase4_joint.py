@@ -76,6 +76,11 @@ class MultiStockTimeIsolationTests(unittest.TestCase):
                 found = set(old[(old.stock == stock) & (old.model == model)].target_dates)
                 self.assertTrue(windows.issubset(found))
 
+    def test_dated_pool_rule_excludes_unrelated_mixed_fuel_companies(self):
+        self.assertTrue(p4.is_coal_label("煤炭开采和洗选业", "中国煤炭"))
+        self.assertTrue(p4.is_coal_label("石油、煤炭及其他燃料加工业", "山西焦化"))
+        self.assertFalse(p4.is_coal_label("石油、煤炭及其他燃料加工业", "某石油化工"))
+
 
 if __name__ == "__main__":
     unittest.main()

@@ -61,8 +61,10 @@ def membership_for(asof: str, pool: str) -> list[str]:
         return TARGETS.copy()
     df["date_key"] = df.classification_asof.where(df.classification_asof.ne("current_only"), AS_OF)
     usable = df[df.date_key.le(asof)].sort_values("date_key").drop_duplicates("code", keep="last")
-    usable = usable[usable.industry.astype(str).str.contains("煤炭|煤矿|采掘", regex=True, na=False) |
-                    usable.code.isin(TARGETS)]
+    # Keep dated membership consistent with the audited pool rule, including only
+    # coal/coking names from BaoStock's mixed petroleum/coal/other-fuels class.
+    usable = usable[[p3code in TARGETS or is_coal_label(industry, name)
+                     for p3code, industry, name in zip(usable.code, usable.industry, usable.get("code_name", ""))]]
     allowed = set(usable.code)
     result = [s for s in stock_files("P2") if s in allowed]
     missing_targets = set(TARGETS) - set(result)
@@ -87,6 +89,16 @@ def common_sessions(files: dict[str, Path]) -> list[str]:
     for stock in TARGETS:
         df,_=read_processed(files[stock]); date_sets.append(set(df.date.astype(str)))
     return sorted(set.intersection(*date_sets))
+
+
+def is_coal_label(industry: str, code_name: str = "") -> bool:
+    label, name = str(industry or ""), str(code_name or "")
+    if "煤炭开采和洗选" in label or "煤矿" in label or "煤炭采选" in label:
+        return True
+    if "煤炭" in label and "石油" not in label and "其他燃料" not in label:
+        return True
+    mixed_fuel = "石油" in label and ("煤炭" in label or "燃料" in label)
+    return mixed_fuel and any(w in name for w in ("煤", "焦", "炭"))
 
 
 def choose_dev_dates(files: dict[str, Path]) -> list[tuple[str, tuple[str, ...]]]:
