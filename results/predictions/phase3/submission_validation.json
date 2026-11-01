@@ -1,0 +1,46 @@
+{
+  "all_valid": true,
+  "formal_filenames": true,
+  "checked_on": "2026-11-01",
+  "files": [
+    {
+      "file": "results/predictions/phase3/10235102458_prediction_601088_SH.csv",
+      "rows": 5,
+      "dates": [
+        "2026-11-02",
+        "2026-11-03",
+        "2026-11-04",
+        "2026-11-05",
+        "2026-11-06"
+      ],
+      "valid": true,
+      "sha256": "dd670e9770ad026b8a736a16b0be654fd399305289bcb70f59174aa2673963f0"
+    },
+    {
+      "file": "results/predictions/phase3/10235102458_prediction_601225_SH.csv",
+      "rows": 5,
+      "dates": [
+        "2026-11-02",
+        "2026-11-03",
+        "2026-11-04",
+        "2026-11-05",
+        "2026-11-06"
+      ],
+      "valid": true,
+      "sha256": "74915acb7ce447b3d434db232f1170719d6a5167896c9c40a6b59512a0912949"
+    },
+    {
+      "file": "results/predictions/phase3/10235102458_prediction_000983_SZ.csv",
+      "rows": 5,
+      "dates": [
+        "2026-11-02",
+        "2026-11-03",
+        "2026-11-04",
+        "2026-11-05",
+        "2026-11-06"
+      ],
+      "valid": true,
+      "sha256": "cf912116ad658e810e4f6e14a78c50889a3245636ac9d4c16b9320a5833f214d"
+    }
+  ]
+}
