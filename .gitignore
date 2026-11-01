@@ -8,6 +8,10 @@ __pycache__/
 .env.*
 results/checkpoints/*
 !results/checkpoints/.gitkeep
+data/coal_pool/raw/*
+!data/coal_pool/raw/.gitkeep
+data/coal_pool/processed/*
+!data/coal_pool/processed/.gitkeep
 *.pt
 *.pth
 *.ckpt
