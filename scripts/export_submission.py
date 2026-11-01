@@ -12,9 +12,10 @@ def main():
     p.add_argument("--output-dir",type=Path,default=ROOT/"results/predictions")
     p.add_argument("--dates-file",type=Path,default=ROOT/"config/prediction_dates.json")
     p.add_argument("--input",type=Path,default=ROOT/"results/predictions/prediction_details.csv")
+    p.add_argument("--metadata",type=Path,default=ROOT/"results/predictions/metadata.json")
     args=p.parse_args()
     if not args.input.is_file(): raise FileNotFoundError(f"真实推理明细不存在：{args.input}；请先运行最终训练与推理")
-    metadata=json.loads((ROOT/"results/predictions/metadata.json").read_text(encoding="utf-8"))
+    metadata=json.loads(args.metadata.read_text(encoding="utf-8"))
     dates=json.loads(args.dates_file.read_text(encoding="utf-8"))["dates"]
     df=pd.read_csv(args.input)
     if not {"stock","date","open"} <= set(df.columns): raise ValueError("推理明细必须含 stock,date,open")

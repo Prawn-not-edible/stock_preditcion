@@ -24,10 +24,10 @@ def validate(path:Path,dates:list[str])->dict:
     return {"file":str(path.resolve()),"rows":len(vals),"dates":got,"valid":True,"sha256":__import__('hashlib').sha256(raw).hexdigest()}
 
 def main():
-    p=argparse.ArgumentParser(description=__doc__); p.add_argument("--student-id"); p.add_argument("--output-dir",type=Path,default=ROOT/"results/predictions"); p.add_argument("--dates-file",type=Path,default=ROOT/"config/prediction_dates.json"); p.add_argument("--draft",action="store_true")
+    p=argparse.ArgumentParser(description=__doc__); p.add_argument("--student-id"); p.add_argument("--output-dir",type=Path,default=ROOT/"results/predictions"); p.add_argument("--dates-file",type=Path,default=ROOT/"config/prediction_dates.json"); p.add_argument("--metadata",type=Path,default=ROOT/"results/predictions/metadata.json"); p.add_argument("--report",type=Path,default=ROOT/"results/predictions/submission_validation.json"); p.add_argument("--draft",action="store_true")
     args=p.parse_args(); cfg=json.loads(args.dates_file.read_text(encoding="utf-8")); dates=cfg["dates"]
     if cfg.get("trading_days_verified")!=dates: raise ValueError("五个日期尚未全部通过交易日历核验")
-    meta=json.loads((ROOT/"results/predictions/metadata.json").read_text(encoding="utf-8"))
+    meta=json.loads(args.metadata.read_text(encoding="utf-8"))
     if len(meta)!=3: raise ValueError("metadata.json must contain all three stocks")
     reports=[]
     for stock,suffix in FILES.items():
@@ -40,7 +40,7 @@ def main():
             path=args.output_dir/f"{args.student_id}_prediction_{suffix}.csv"
         reports.append(validate(path,dates))
     report={"all_valid":True,"formal_filenames":bool(args.student_id and not args.draft),"checked_on":date.today().isoformat(),"files":reports}
-    out=ROOT/"results/predictions/submission_validation.json"; out.write_text(json.dumps(report,ensure_ascii=False,indent=2),encoding="utf-8")
+    out=args.report; out.parent.mkdir(parents=True,exist_ok=True); out.write_text(json.dumps(report,ensure_ascii=False,indent=2),encoding="utf-8")
     print(json.dumps(report,ensure_ascii=False,indent=2))
 
 if __name__=="__main__": main()
