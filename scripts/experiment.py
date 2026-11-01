@@ -188,6 +188,7 @@ def main():
     rows=[]
     if args.mode == "recent":
         # Locked architecture/config; a new model is fitted at day 0,20,... .
+        training_runs=[]
         for s in stock_cfg:
             df,raw=matrix(paths[s["query_code"]]); n=len(raw); start=n-180
             if start < 60+126: raise ValueError(f"Not enough pre-holdout history for {s['query_code']}")
@@ -200,6 +201,13 @@ def main():
                         ckpt=ROOT/"results/checkpoints"/f"recent_{s['query_code'].replace('.','_')}_{model_name}_{df.date.iloc[origin]}.pt"
                         saved=fit_evaluate(model_name,raw,train_end,train_end,origin,opts,ckpt)
                         train_origin=origin
+                        training_runs.append({"stock":s["query_code"],"model":model_name,"retrain_origin":df.date.iloc[origin],
+                            "train_cutoff":df.date.iloc[train_end-1],"validation_start":df.date.iloc[train_end],
+                            "validation_end":df.date.iloc[origin-1],"best_epoch":saved["best_epoch"],
+                            "train_loss":saved["train_loss"],"validation_loss":saved["val_loss"],
+                            "parameter_count":saved["params"],"runtime_seconds":saved["runtime_seconds"],
+                            "peak_gpu_memory_mb":saved["peak_gpu_memory_mb"],"device":saved["device"],"checkpoint":str(ckpt),
+                            "checkpoint_sha256":hashlib.sha256(ckpt.read_bytes()).hexdigest()})
                     else:
                         saved["prediction"]=predict_checkpoint(model_name,raw,origin,ckpt,opts.device if opts.device!="auto" else ("cuda" if torch.cuda.is_available() else "cpu"))
                     true=raw[origin:origin+5,-1]; baseline=float(raw[origin-1,2])
@@ -207,7 +215,9 @@ def main():
                     fold_rows.append({"stock":s["query_code"],"model":model_name,"origin_date":df.date.iloc[origin],
                         "target_dates":";".join(df.date.iloc[origin:origin+5]),"actual_open":";".join(f"{x:.6f}" for x in true),
                         "predicted_open":";".join(f"{x:.6f}" for x in saved["prediction"]),"baseline_close":baseline,
-                        "training_cutoff":df.date.iloc[origin-127],"retrain_origin":df.date.iloc[train_origin],"checkpoint":str(ckpt),**metrics})
+                        "training_cutoff":df.date.iloc[origin-127],"retrain_origin":df.date.iloc[train_origin],"checkpoint":str(ckpt),
+                        "best_epoch":saved["best_epoch"],"train_loss":saved["train_loss"],"validation_loss":saved["val_loss"],
+                        "retraining_runtime_seconds":saved["runtime_seconds"],"peak_gpu_memory_mb":saved["peak_gpu_memory_mb"],**metrics})
             for wi,origin in enumerate(origin_list):
                 true=raw[origin:origin+5,-1]; baseline=float(raw[origin-1,2]); bpred=np.full(5,baseline)
                 fold_rows.append({"stock":s["query_code"],"model":"LastCloseBaseline","origin_date":df.date.iloc[origin],
@@ -219,6 +229,7 @@ def main():
         out=ROOT/"results/metrics"; out.mkdir(parents=True,exist_ok=True)
         result_df=pd.DataFrame(rows); result_df.to_csv(out/"recent_windows.csv",index=False)
         result_df.groupby(["stock","model"],as_index=False).agg(mean_nmse=("nmse","mean"),median_nmse=("nmse","median"),std_nmse=("nmse","std"),mean_mae=("mae","mean"),mean_rmse=("rmse","mean"),windows=("nmse","count")).to_csv(out/"recent_summary.csv",index=False)
+        pd.DataFrame(training_runs).to_csv(out/"recent_training_runs.csv",index=False)
         return
 
     rows=[]
