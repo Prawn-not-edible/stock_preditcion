@@ -1,0 +1,7 @@
+development P2_ID TimeXer 2019-07-01: target_val=0.00075948647, epoch=15
+development P2_ID DLinear 2019-07-01: target_val=0.00071202562, epoch=5
+development P2_ID TimeXer 2022-07-01: target_val=0.0025509237, epoch=14
+development P2_ID DLinear 2022-07-01: target_val=0.0025205681, epoch=17
+development P2_ID TimeXer 2025-07-01: target_val=0.00054658241, epoch=6
+development P2_ID DLinear 2025-07-01: target_val=0.00037434207, epoch=11
+Saved 72 predictions and 6 fits to /root/autodl-tmp/phase6-run/results/phase6_stock_id/development

@@ -86,6 +86,12 @@ BaoStock 查询得到 32 只不同沪深 A 股煤炭/煤焦相关股票，32 只
 
 近期 8 窗口只作为快速开发比较，不是独立测试集。Alpha 仅由三个历史开发起点选择。神华和陕煤没有候选同时满足近期均值、median 和至少 5/8 窗口胜出的规则，保留 Last Close；山西焦煤选择 P0 TimeXer、alpha=0.5，近期 mean NMSE 0.00054003，相对 Last Close 的 0.00068283 改善 20.9%，8 窗口胜 6。按开发期中位最佳 epoch 17 在截至 2026-10-30 的完整历史上重训；正式 CSV 已导出并校验，Phase 4 文件保持不变。完整方法、指标、最终预测和限制见 [`docs/PHASE5_TARGETAWARE.md`](docs/PHASE5_TARGETAWARE.md)。
 
+### Phase 6：煤炭池共享模型的 Stock ID 静态修正消融
+
+新增 `StockIDResidual`：在 Phase 5 P2 backbone 输出上加零初始化的 `Embedding(stock_id) → Linear(5)` 修正头，初始预测与无 ID backbone 完全相同。按补丁预设 `embedding_dim=8`、`id_l2=0.001`、batch 512、seed 2026，仅运行 TimeXer 与 DLinear。共完成 6 次历史开发和 4 次近期共享拟合。开发期 alpha 锁定，近期 8 窗口与 Phase 5 冻结 P2 预测逐日期和真实值配对；配置与输入数据哈希保存在 `results/phase6_stock_id/`。
+
+没有 P2_ID 模型同时达到近期改善门槛并超过 Phase 5 已选方案，因此三只股票均保留 Phase 5 预测，没有生成新的最终模型或提交 CSV。近期数据已被前序实验使用，结果不构成独立测试。方法和完整比较见 [`docs/PHASE6_STOCK_ID.md`](docs/PHASE6_STOCK_ID.md)。
+
 ## GitHub 同步约定
 
 实验代码、可公开的 BaoStock 行情、数据审计、指标和文档通过阶段分支归档；提交时只暂存本轮相关文件。凭据与模型 checkpoint 不上传 GitHub。详见 `docs/GIT_WORKFLOW.md`。

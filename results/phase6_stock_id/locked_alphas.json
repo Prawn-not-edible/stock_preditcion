@@ -1,0 +1,74 @@
+[
+  {
+    "pool": "P2",
+    "model": "DLinear",
+    "stock": "sh.601088",
+    "alpha": 0.0
+  },
+  {
+    "pool": "P2",
+    "model": "DLinear",
+    "stock": "sh.601225",
+    "alpha": 0.0
+  },
+  {
+    "pool": "P2",
+    "model": "DLinear",
+    "stock": "sz.000983",
+    "alpha": 0.0
+  },
+  {
+    "pool": "P2",
+    "model": "TimeXer",
+    "stock": "sh.601088",
+    "alpha": 0.0
+  },
+  {
+    "pool": "P2",
+    "model": "TimeXer",
+    "stock": "sh.601225",
+    "alpha": 0.0
+  },
+  {
+    "pool": "P2",
+    "model": "TimeXer",
+    "stock": "sz.000983",
+    "alpha": 1.0
+  },
+  {
+    "pool": "P2_ID",
+    "model": "DLinear",
+    "stock": "sh.601088",
+    "alpha": 0.25
+  },
+  {
+    "pool": "P2_ID",
+    "model": "DLinear",
+    "stock": "sh.601225",
+    "alpha": 0.0
+  },
+  {
+    "pool": "P2_ID",
+    "model": "DLinear",
+    "stock": "sz.000983",
+    "alpha": 0.0
+  },
+  {
+    "pool": "P2_ID",
+    "model": "TimeXer",
+    "stock": "sh.601088",
+    "alpha": 0.0
+  },
+  {
+    "pool": "P2_ID",
+    "model": "TimeXer",
+    "stock": "sh.601225",
+    "alpha": 1.0
+  },
+  {
+    "pool": "P2_ID",
+    "model": "TimeXer",
+    "stock": "sz.000983",
+    "alpha": 0.25
+  }
+]

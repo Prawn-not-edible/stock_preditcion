@@ -1,0 +1,28 @@
+{
+  "as_of": "2026-10-30",
+  "recent_is_independent_test": false,
+  "phase5_incumbent_mean_nmse": {
+    "sh.601088": 0.00038081495241253414,
+    "sh.601225": 0.00042184695075114494,
+    "sz.000983": 0.0005400318699397875
+  },
+  "phase5_incumbent_median_nmse": {
+    "sh.601088": 0.0003683256987297,
+    "sh.601225": 0.0003537455474827,
+    "sz.000983": 0.0005587295864211
+  },
+  "stocks": {
+    "sh.601088": {
+      "pool": "Phase5-incumbent",
+      "reason": "No P2_ID candidate cleared preset gates"
+    },
+    "sh.601225": {
+      "pool": "Phase5-incumbent",
+      "reason": "No P2_ID candidate cleared preset gates"
+    },
+    "sz.000983": {
+      "pool": "Phase5-incumbent",
+      "reason": "No P2_ID candidate cleared preset gates"
+    }
+  }
+}

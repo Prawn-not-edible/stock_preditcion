@@ -1,0 +1,5 @@
+recent P2_ID TimeXer 2026-08-28: target_val=0.0014004934, epoch=8
+recent P2_ID DLinear 2026-08-28: target_val=0.0011590661, epoch=4
+recent P2_ID TimeXer 2026-09-28: target_val=0.001175825, epoch=8
+recent P2_ID DLinear 2026-09-28: target_val=0.0010156459, epoch=10
+Saved 192 predictions and 4 fits to /root/autodl-tmp/phase6-run/results/phase6_stock_id/recent
