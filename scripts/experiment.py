@@ -215,7 +215,7 @@ def main():
                     fold_rows.append({"stock":s["query_code"],"model":model_name,"origin_date":df.date.iloc[origin],
                         "target_dates":";".join(df.date.iloc[origin:origin+5]),"actual_open":";".join(f"{x:.6f}" for x in true),
                         "predicted_open":";".join(f"{x:.6f}" for x in saved["prediction"]),"baseline_close":baseline,
-                        "training_cutoff":df.date.iloc[origin-127],"retrain_origin":df.date.iloc[train_origin],"checkpoint":str(ckpt),
+                        "training_cutoff":df.date.iloc[train_origin-127],"retrain_origin":df.date.iloc[train_origin],"checkpoint":str(ckpt),
                         "best_epoch":saved["best_epoch"],"train_loss":saved["train_loss"],"validation_loss":saved["val_loss"],
                         "retraining_runtime_seconds":saved["runtime_seconds"],"peak_gpu_memory_mb":saved["peak_gpu_memory_mb"],**metrics})
             for wi,origin in enumerate(origin_list):
