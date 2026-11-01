@@ -80,6 +80,12 @@ BaoStock 查询得到 32 只不同沪深 A 股煤炭/煤焦相关股票，32 只
 
 最终使用截至 2026-10-30 的 28 只煤炭股历史数据训练 P2 TimeXer 12 个 epoch，仅将通过规则的山西焦煤预测更新到 Phase 4 独立目录；中国神华和陕西煤业继续使用 Phase 3 Baseline。Phase 4 三份 CSV 均验证通过，Phase 3/Phase 2 原始结果未覆盖。训练代码、完整逐窗口结果、检查点哈希、配置、数据和审计见本分支 `results/phase4_joint_training/`；大型 checkpoint 保留在远端 GPU 环境，不提交 GitHub。
 
+### Phase 5：按目标验证集选择共享训练与单股微调
+
+在独立 `phase5-targetaware` 分支追加了 Phase 5 代码，没有替换 Phase 3/4 实现或结果。比较 P0 单股从头训练、P1 三只目标股票联合训练、P2 按时点可用的煤炭池联合训练，以及从同日期 P2 checkpoint 初始化的 P3 单股微调。保留 Residual 输入/目标、60 日输入、5 日预测和统一时间边界。按补丁说明先运行 DLinear、TimeXer；共完成 48 次历史开发拟合和 32 次近期拟合，全部训练记录、预测、配置、日志和模型选择归档于 `results/phase5_targetaware/`，checkpoint 留在远端 GPU。
+
+近期 8 窗口只作为快速开发比较，不是独立测试集。Alpha 仅由三个历史开发起点选择。神华和陕煤没有候选同时满足近期均值、median 和至少 5/8 窗口胜出的规则，保留 Last Close；山西焦煤选择 P0 TimeXer、alpha=0.5，近期 mean NMSE 0.00054003，相对 Last Close 的 0.00068283 改善 20.9%，8 窗口胜 6。按开发期中位最佳 epoch 17 在截至 2026-10-30 的完整历史上重训；正式 CSV 已导出并校验，Phase 4 文件保持不变。完整方法、指标、最终预测和限制见 [`docs/PHASE5_TARGETAWARE.md`](docs/PHASE5_TARGETAWARE.md)。
+
 ## GitHub 同步约定
 
 实验代码、可公开的 BaoStock 行情、数据审计、指标和文档通过阶段分支归档；提交时只暂存本轮相关文件。凭据与模型 checkpoint 不上传 GitHub。详见 `docs/GIT_WORKFLOW.md`。

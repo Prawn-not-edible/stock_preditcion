@@ -1,0 +1,35 @@
+recent group=1 origin=2026-08-28 val_start=2026-02-26
+fit P0 DLinear sh_601088: val_target=0.0008156168 val_pool=0.0008156168 epoch=49
+fit P0 DLinear sh_601225: val_target=0.001418439 val_pool=0.001418439 epoch=50
+fit P0 DLinear sz_000983: val_target=0.001325189 val_pool=0.001325189 epoch=42
+fit P1 DLinear shared: val_target=0.001144696 val_pool=0.001144696 epoch=20
+fit P2 DLinear shared: val_target=0.001155494 val_pool=0.002263402 epoch=4
+fine-tune P3 DLinear sh.601088: val=0.0008180935 epoch=2
+fine-tune P3 DLinear sh.601225: val=0.001315169 epoch=0
+fine-tune P3 DLinear sz.000983: val=0.001312607 epoch=1
+fit P0 TimeXer sh_601088: val_target=0.00136395 val_pool=0.00136395 epoch=16
+fit P0 TimeXer sh_601225: val_target=0.001575662 val_pool=0.001575662 epoch=31
+fit P0 TimeXer sz_000983: val_target=0.001674367 val_pool=0.001674367 epoch=16
+fit P1 TimeXer shared: val_target=0.001486473 val_pool=0.001486473 epoch=12
+fit P2 TimeXer shared: val_target=0.001391264 val_pool=0.00262526 epoch=8
+fine-tune P3 TimeXer sh.601088: val=0.001074777 epoch=2
+fine-tune P3 TimeXer sh.601225: val=0.001571424 epoch=1
+fine-tune P3 TimeXer sz.000983: val=0.001477049 epoch=3
+recent group=2 origin=2026-09-28 val_start=2026-03-26
+fit P0 DLinear sh_601088: val_target=0.0006616288 val_pool=0.0006616288 epoch=49
+fit P0 DLinear sh_601225: val_target=0.001292125 val_pool=0.001292125 epoch=36
+fit P0 DLinear sz_000983: val_target=0.001249792 val_pool=0.001249792 epoch=43
+fit P1 DLinear shared: val_target=0.001026909 val_pool=0.001026909 epoch=19
+fit P2 DLinear shared: val_target=0.001018329 val_pool=0.002292638 epoch=10
+fine-tune P3 DLinear sh.601088: val=0.00065675 epoch=6
+fine-tune P3 DLinear sh.601225: val=0.001150301 epoch=0
+fine-tune P3 DLinear sz.000983: val=0.001237691 epoch=1
+fit P0 TimeXer sh_601088: val_target=0.001098272 val_pool=0.001098272 epoch=27
+fit P0 TimeXer sh_601225: val_target=0.001413617 val_pool=0.001413617 epoch=22
+fit P0 TimeXer sz_000983: val_target=0.001744349 val_pool=0.001744349 epoch=11
+fit P1 TimeXer shared: val_target=0.001386395 val_pool=0.001386395 epoch=6
+fit P2 TimeXer shared: val_target=0.001123943 val_pool=0.002706263 epoch=10
+fine-tune P3 TimeXer sh.601088: val=0.0007930499 epoch=1
+fine-tune P3 TimeXer sh.601225: val=0.001251489 epoch=0
+fine-tune P3 TimeXer sz.000983: val=0.001317427 epoch=0
+Saved 768 predictions and 32 fits to /root/autodl-tmp/phase3-run/results/phase5_targetaware/recent

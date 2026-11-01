@@ -1,0 +1,52 @@
+development group=1 origin=2019-07-01 val_start=2018-12-19
+fit P0 DLinear sh_601088: val_target=0.0007801014 val_pool=0.0007801014 epoch=50
+fit P0 DLinear sh_601225: val_target=0.001133781 val_pool=0.001133781 epoch=50
+fit P0 DLinear sz_000983: val_target=0.001212412 val_pool=0.001212412 epoch=50
+fit P1 DLinear shared: val_target=0.0007151098 val_pool=0.0007151098 epoch=46
+fit P2 DLinear shared: val_target=0.0007149173 val_pool=0.001480992 epoch=28
+fine-tune P3 DLinear sh.601088: val=0.0004776998 epoch=3
+fine-tune P3 DLinear sh.601225: val=0.0007416249 epoch=0
+fine-tune P3 DLinear sz.000983: val=0.0009209091 epoch=0
+fit P0 TimeXer sh_601088: val_target=0.0006068671 val_pool=0.0006068671 epoch=25
+fit P0 TimeXer sh_601225: val_target=0.001252706 val_pool=0.001252706 epoch=27
+fit P0 TimeXer sz_000983: val_target=0.001191597 val_pool=0.001191597 epoch=17
+fit P1 TimeXer shared: val_target=0.000906682 val_pool=0.000906682 epoch=14
+fit P2 TimeXer shared: val_target=0.0007685727 val_pool=0.00176414 epoch=22
+fine-tune P3 TimeXer sh.601088: val=0.0005479963 epoch=0
+fine-tune P3 TimeXer sh.601225: val=0.0008336904 epoch=0
+fine-tune P3 TimeXer sz.000983: val=0.0009240159 epoch=0
+development group=2 origin=2022-07-01 val_start=2021-12-21
+fit P0 DLinear sh_601088: val_target=0.001557293 val_pool=0.001557293 epoch=47
+fit P0 DLinear sh_601225: val_target=0.001588095 val_pool=0.001588095 epoch=50
+fit P0 DLinear sz_000983: val_target=0.004698725 val_pool=0.004698725 epoch=46
+fit P1 DLinear shared: val_target=0.00253235 val_pool=0.00253235 epoch=24
+fit P2 DLinear shared: val_target=0.002550028 val_pool=0.003320943 epoch=3
+fine-tune P3 DLinear sh.601088: val=0.001417886 epoch=0
+fine-tune P3 DLinear sh.601225: val=0.001561327 epoch=4
+fine-tune P3 DLinear sz.000983: val=0.004643185 epoch=0
+fit P0 TimeXer sh_601088: val_target=0.001947702 val_pool=0.001947702 epoch=24
+fit P0 TimeXer sh_601225: val_target=0.002042338 val_pool=0.002042338 epoch=23
+fit P0 TimeXer sz_000983: val_target=0.006475654 val_pool=0.006475654 epoch=10
+fit P1 TimeXer shared: val_target=0.002767904 val_pool=0.002767904 epoch=18
+fit P2 TimeXer shared: val_target=0.002673812 val_pool=0.003607196 epoch=8
+fine-tune P3 TimeXer sh.601088: val=0.001444336 epoch=0
+fine-tune P3 TimeXer sh.601225: val=0.00163469 epoch=0
+fine-tune P3 TimeXer sz.000983: val=0.004850267 epoch=3
+development group=3 origin=2025-07-01 val_start=2024-12-19
+fit P0 DLinear sh_601088: val_target=0.0003168438 val_pool=0.0003168438 epoch=49
+fit P0 DLinear sh_601225: val_target=0.0005037258 val_pool=0.0005037258 epoch=48
+fit P0 DLinear sz_000983: val_target=0.0003849758 val_pool=0.0003849758 epoch=40
+fit P1 DLinear shared: val_target=0.0003939618 val_pool=0.0003939618 epoch=21
+fit P2 DLinear shared: val_target=0.0003858107 val_pool=0.0007525545 epoch=5
+fine-tune P3 DLinear sh.601088: val=0.0002905022 epoch=0
+fine-tune P3 DLinear sh.601225: val=0.0004858667 epoch=0
+fine-tune P3 DLinear sz.000983: val=0.0003799108 epoch=1
+fit P0 TimeXer sh_601088: val_target=0.0004929077 val_pool=0.0004929077 epoch=15
+fit P0 TimeXer sh_601225: val_target=0.0008909173 val_pool=0.0008909173 epoch=13
+fit P0 TimeXer sz_000983: val_target=0.0006012897 val_pool=0.0006012897 epoch=18
+fit P1 TimeXer shared: val_target=0.000681652 val_pool=0.000681652 epoch=3
+fit P2 TimeXer shared: val_target=0.0004552446 val_pool=0.0008503786 epoch=12
+fine-tune P3 TimeXer sh.601088: val=0.0003597231 epoch=0
+fine-tune P3 TimeXer sh.601225: val=0.0005816455 epoch=0
+fine-tune P3 TimeXer sz.000983: val=0.0004243717 epoch=0
+Saved 288 predictions and 48 fits to /root/autodl-tmp/phase3-run/results/phase5_targetaware/development

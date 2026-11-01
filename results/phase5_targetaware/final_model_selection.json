@@ -1,0 +1,33 @@
+{
+  "as_of": "2026-10-30",
+  "not_independent_test": true,
+  "alpha_selection": "development 3 dates only",
+  "batch_size_comparable": true,
+  "checkpoints_selected_by": "target-stock macro validation NMSE",
+  "recent_windows": 8,
+  "stocks": {
+    "sh.601088": {
+      "pool": "LastCloseBaseline",
+      "model": "LastCloseBaseline",
+      "alpha": 0.0,
+      "recent_mean_nmse": 0.00038081495241257816,
+      "reason": "No candidate met mean/median/paired-win selection rule"
+    },
+    "sh.601225": {
+      "pool": "LastCloseBaseline",
+      "model": "LastCloseBaseline",
+      "alpha": 0.0,
+      "recent_mean_nmse": 0.0004218469507511813,
+      "reason": "No candidate met mean/median/paired-win selection rule"
+    },
+    "sz.000983": {
+      "pool": "P0",
+      "model": "TimeXer",
+      "alpha": 0.5,
+      "recent_mean_nmse": 0.0005400318699398344,
+      "baseline_mean_nmse": 0.0006828291728120384,
+      "wins": 6,
+      "reason": "Met predefined recent comparison rule"
+    }
+  }
+}

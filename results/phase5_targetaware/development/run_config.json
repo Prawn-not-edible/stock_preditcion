@@ -1,0 +1,34 @@
+{
+  "phase": 5,
+  "stage": "development",
+  "models": [
+    "DLinear",
+    "TimeXer"
+  ],
+  "pools": [
+    "P0",
+    "P1",
+    "P2",
+    "P3"
+  ],
+  "seq_len": 60,
+  "pred_len": 5,
+  "batch_size": 512,
+  "lr": 0.001,
+  "seed": 2026,
+  "epochs": 50,
+  "patience": 7,
+  "val_rows": 126,
+  "finetune_lr": 0.0001,
+  "finetune_epochs": 10,
+  "finetune_patience": 3,
+  "checkpoint_selection": "equal weight macro validation NMSE of the 3 target stocks",
+  "P3_pretraining": "same-fit-origin P2 target-aware checkpoint",
+  "alpha_selection": "development only; locked for recent",
+  "origin_dates": [
+    "2019-07-01",
+    "2022-07-01",
+    "2025-07-01"
+  ],
+  "coal_pool_manifest": "data/coal_pool/manifests/industry_membership.csv"
+}

@@ -1,0 +1,170 @@
+[
+  {
+    "pool": "P0",
+    "model": "DLinear",
+    "stock": "sh.601088",
+    "alpha": 0.0,
+    "source": "three pre-recent development origins"
+  },
+  {
+    "pool": "P0",
+    "model": "DLinear",
+    "stock": "sh.601225",
+    "alpha": 0.0,
+    "source": "three pre-recent development origins"
+  },
+  {
+    "pool": "P0",
+    "model": "DLinear",
+    "stock": "sz.000983",
+    "alpha": 0.0,
+    "source": "three pre-recent development origins"
+  },
+  {
+    "pool": "P0",
+    "model": "TimeXer",
+    "stock": "sh.601088",
+    "alpha": 0.0,
+    "source": "three pre-recent development origins"
+  },
+  {
+    "pool": "P0",
+    "model": "TimeXer",
+    "stock": "sh.601225",
+    "alpha": 0.0,
+    "source": "three pre-recent development origins"
+  },
+  {
+    "pool": "P0",
+    "model": "TimeXer",
+    "stock": "sz.000983",
+    "alpha": 0.5,
+    "source": "three pre-recent development origins"
+  },
+  {
+    "pool": "P1",
+    "model": "DLinear",
+    "stock": "sh.601088",
+    "alpha": 0.5,
+    "source": "three pre-recent development origins"
+  },
+  {
+    "pool": "P1",
+    "model": "DLinear",
+    "stock": "sh.601225",
+    "alpha": 0.0,
+    "source": "three pre-recent development origins"
+  },
+  {
+    "pool": "P1",
+    "model": "DLinear",
+    "stock": "sz.000983",
+    "alpha": 0.0,
+    "source": "three pre-recent development origins"
+  },
+  {
+    "pool": "P1",
+    "model": "TimeXer",
+    "stock": "sh.601088",
+    "alpha": 0.0,
+    "source": "three pre-recent development origins"
+  },
+  {
+    "pool": "P1",
+    "model": "TimeXer",
+    "stock": "sh.601225",
+    "alpha": 0.0,
+    "source": "three pre-recent development origins"
+  },
+  {
+    "pool": "P1",
+    "model": "TimeXer",
+    "stock": "sz.000983",
+    "alpha": 0.25,
+    "source": "three pre-recent development origins"
+  },
+  {
+    "pool": "P2",
+    "model": "DLinear",
+    "stock": "sh.601088",
+    "alpha": 0.0,
+    "source": "three pre-recent development origins"
+  },
+  {
+    "pool": "P2",
+    "model": "DLinear",
+    "stock": "sh.601225",
+    "alpha": 0.0,
+    "source": "three pre-recent development origins"
+  },
+  {
+    "pool": "P2",
+    "model": "DLinear",
+    "stock": "sz.000983",
+    "alpha": 0.0,
+    "source": "three pre-recent development origins"
+  },
+  {
+    "pool": "P2",
+    "model": "TimeXer",
+    "stock": "sh.601088",
+    "alpha": 0.0,
+    "source": "three pre-recent development origins"
+  },
+  {
+    "pool": "P2",
+    "model": "TimeXer",
+    "stock": "sh.601225",
+    "alpha": 0.0,
+    "source": "three pre-recent development origins"
+  },
+  {
+    "pool": "P2",
+    "model": "TimeXer",
+    "stock": "sz.000983",
+    "alpha": 1.0,
+    "source": "three pre-recent development origins"
+  },
+  {
+    "pool": "P3",
+    "model": "DLinear",
+    "stock": "sh.601088",
+    "alpha": 0.0,
+    "source": "three pre-recent development origins"
+  },
+  {
+    "pool": "P3",
+    "model": "DLinear",
+    "stock": "sh.601225",
+    "alpha": 0.25,
+    "source": "three pre-recent development origins"
+  },
+  {
+    "pool": "P3",
+    "model": "DLinear",
+    "stock": "sz.000983",
+    "alpha": 0.0,
+    "source": "three pre-recent development origins"
+  },
+  {
+    "pool": "P3",
+    "model": "TimeXer",
+    "stock": "sh.601088",
+    "alpha": 0.0,
+    "source": "three pre-recent development origins"
+  },
+  {
+    "pool": "P3",
+    "model": "TimeXer",
+    "stock": "sh.601225",
+    "alpha": 0.0,
+    "source": "three pre-recent development origins"
+  },
+  {
+    "pool": "P3",
+    "model": "TimeXer",
+    "stock": "sz.000983",
+    "alpha": 1.0,
+    "source": "three pre-recent development origins"
+  }
+]
