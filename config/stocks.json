@@ -1,0 +1,25 @@
+{
+  "stocks": [
+    {
+      "name": "中国神华",
+      "security_code": "601088",
+      "exchange": "sh",
+      "query_code": "sh.601088",
+      "output_file": "sh_601088.csv"
+    },
+    {
+      "name": "陕西煤业",
+      "security_code": "601225",
+      "exchange": "sh",
+      "query_code": "sh.601225",
+      "output_file": "sh_601225.csv"
+    },
+    {
+      "name": "山西焦煤",
+      "security_code": "000983",
+      "exchange": "sz",
+      "query_code": "sz.000983",
+      "output_file": "sz_000983.csv"
+    }
+  ]
+}
