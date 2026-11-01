@@ -1,2 +1,6 @@
 baostock
 pandas
+numpy
+torch
+einops
+reformer-pytorch

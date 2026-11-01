@@ -1,0 +1,305 @@
+{
+  "stock": "sh.601225",
+  "processed_csv": "data\\processed\\sh_601225.csv",
+  "N": 3099,
+  "seq_len": 60,
+  "pred_len": 5,
+  "boundary_convention": "half_open_0_based_row_indices",
+  "origin_convention": "origin o predicts [o,o+pred_len); X uses [o-seq_len,o)",
+  "splits": [
+    {
+      "fold_id": "origin_01",
+      "origin_index": 882,
+      "segments": {
+        "train": [
+          0,
+          756
+        ],
+        "val": [
+          756,
+          882
+        ],
+        "test": [
+          882,
+          887
+        ]
+      },
+      "valid_origin_ranges_inclusive": {
+        "train": [
+          60,
+          751
+        ],
+        "val": [
+          756,
+          877
+        ],
+        "test": [
+          882,
+          882
+        ]
+      },
+      "train_window_count_stride1": 692,
+      "val_window_count_stride1": 122,
+      "test_window_count_stride1": 1,
+      "date_segments": {
+        "train": [
+          "2014-01-28",
+          "2017-03-07"
+        ],
+        "val": [
+          "2017-03-08",
+          "2017-09-06"
+        ],
+        "test": [
+          "2017-09-07",
+          "2017-09-13"
+        ]
+      }
+    },
+    {
+      "fold_id": "origin_02",
+      "origin_index": 1288,
+      "segments": {
+        "train": [
+          0,
+          1162
+        ],
+        "val": [
+          1162,
+          1288
+        ],
+        "test": [
+          1288,
+          1293
+        ]
+      },
+      "valid_origin_ranges_inclusive": {
+        "train": [
+          60,
+          1157
+        ],
+        "val": [
+          1162,
+          1283
+        ],
+        "test": [
+          1288,
+          1288
+        ]
+      },
+      "train_window_count_stride1": 1098,
+      "val_window_count_stride1": 122,
+      "test_window_count_stride1": 1,
+      "date_segments": {
+        "train": [
+          "2014-01-28",
+          "2018-11-02"
+        ],
+        "val": [
+          "2018-11-05",
+          "2019-05-14"
+        ],
+        "test": [
+          "2019-05-15",
+          "2019-05-21"
+        ]
+      }
+    },
+    {
+      "fold_id": "origin_03",
+      "origin_index": 1694,
+      "segments": {
+        "train": [
+          0,
+          1568
+        ],
+        "val": [
+          1568,
+          1694
+        ],
+        "test": [
+          1694,
+          1699
+        ]
+      },
+      "valid_origin_ranges_inclusive": {
+        "train": [
+          60,
+          1563
+        ],
+        "val": [
+          1568,
+          1689
+        ],
+        "test": [
+          1694,
+          1694
+        ]
+      },
+      "train_window_count_stride1": 1504,
+      "val_window_count_stride1": 122,
+      "test_window_count_stride1": 1,
+      "date_segments": {
+        "train": [
+          "2014-01-28",
+          "2020-07-07"
+        ],
+        "val": [
+          "2020-07-08",
+          "2021-01-08"
+        ],
+        "test": [
+          "2021-01-11",
+          "2021-01-15"
+        ]
+      }
+    },
+    {
+      "fold_id": "origin_04",
+      "origin_index": 2101,
+      "segments": {
+        "train": [
+          0,
+          1975
+        ],
+        "val": [
+          1975,
+          2101
+        ],
+        "test": [
+          2101,
+          2106
+        ]
+      },
+      "valid_origin_ranges_inclusive": {
+        "train": [
+          60,
+          1970
+        ],
+        "val": [
+          1975,
+          2096
+        ],
+        "test": [
+          2101,
+          2101
+        ]
+      },
+      "train_window_count_stride1": 1911,
+      "val_window_count_stride1": 122,
+      "test_window_count_stride1": 1,
+      "date_segments": {
+        "train": [
+          "2014-01-28",
+          "2022-03-10"
+        ],
+        "val": [
+          "2022-03-11",
+          "2022-09-13"
+        ],
+        "test": [
+          "2022-09-14",
+          "2022-09-20"
+        ]
+      }
+    },
+    {
+      "fold_id": "origin_05",
+      "origin_index": 2507,
+      "segments": {
+        "train": [
+          0,
+          2381
+        ],
+        "val": [
+          2381,
+          2507
+        ],
+        "test": [
+          2507,
+          2512
+        ]
+      },
+      "valid_origin_ranges_inclusive": {
+        "train": [
+          60,
+          2376
+        ],
+        "val": [
+          2381,
+          2502
+        ],
+        "test": [
+          2507,
+          2507
+        ]
+      },
+      "train_window_count_stride1": 2317,
+      "val_window_count_stride1": 122,
+      "test_window_count_stride1": 1,
+      "date_segments": {
+        "train": [
+          "2014-01-28",
+          "2023-11-10"
+        ],
+        "val": [
+          "2023-11-13",
+          "2024-05-22"
+        ],
+        "test": [
+          "2024-05-23",
+          "2024-05-29"
+        ]
+      }
+    },
+    {
+      "fold_id": "origin_06",
+      "origin_index": 2914,
+      "segments": {
+        "train": [
+          0,
+          2788
+        ],
+        "val": [
+          2788,
+          2914
+        ],
+        "test": [
+          2914,
+          2919
+        ]
+      },
+      "valid_origin_ranges_inclusive": {
+        "train": [
+          60,
+          2783
+        ],
+        "val": [
+          2788,
+          2909
+        ],
+        "test": [
+          2914,
+          2914
+        ]
+      },
+      "train_window_count_stride1": 2724,
+      "val_window_count_stride1": 122,
+      "test_window_count_stride1": 1,
+      "date_segments": {
+        "train": [
+          "2014-01-28",
+          "2025-07-17"
+        ],
+        "val": [
+          "2025-07-18",
+          "2026-01-21"
+        ],
+        "test": [
+          "2026-01-22",
+          "2026-01-28"
+        ]
+      }
+    }
+  ]
+}

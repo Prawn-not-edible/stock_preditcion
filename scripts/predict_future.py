@@ -1,7 +1,8 @@
-"""后续阶段：未来 5 日预测尚未实现，预测日期与方案待共同确定。"""
-
-def main():
-    raise NotImplementedError("后续阶段：未来 5 日预测尚未实现，预测日期与方案待共同确定。")
+"""Run final inference from the locked development selection (see experiment.py)."""
+from experiment import main
 
 if __name__ == "__main__":
+    import sys
+    if "--mode" not in sys.argv:
+        sys.argv[1:1] = ["--mode", "final"]
     main()

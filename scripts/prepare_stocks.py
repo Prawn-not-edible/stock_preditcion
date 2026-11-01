@@ -22,12 +22,8 @@ from pathlib import Path
 from typing import Any
 
 import pandas as pd
+import numpy as np
 
-STOCKS = {
-    "sh.601088": "sh_601088.csv",  # 中国神华
-    "sh.601225": "sh_601225.csv",  # 陕西煤业
-    "sz.000983": "sz_000983.csv",  # 山西焦煤
-}
 MODEL_COLS = ["date", "high", "low", "close", "volume", "amount", "open"]
 NUM_COLS = MODEL_COLS[1:]
 REQUIRED_RAW = ["date", "code", "open", "high", "low", "close", "volume", "amount", "tradestatus", "adjustflag"]
@@ -41,38 +37,36 @@ def sha256(path: Path) -> str:
     return h.hexdigest()
 
 
-def get_folds(n: int, seq_len: int = 60, pred_len: int = 5) -> list[dict[str, Any]]:
-    """Expanding [0, train) | [train, val) | [val, test) row segments.
+def get_folds(n: int, seq_len: int = 60, pred_len: int = 5,
+              validation_size: int = 126, recent_holdout: int = 180,
+              minimum_train: int = 756, count: int = 6) -> list[dict[str, Any]]:
+    """Six expanding historical windows, leaving the recent 180 rows untouched.
 
-    A supervised origin o uses X rows [o-seq_len, o) and targets
-    [o, o+pred_len). All label rows must lie within that origin's segment;
-    the past input may cross a segment border (legal, observable history).
+    Each origin is the first test-target row. Validation is the 126 known rows
+    immediately before it; training ends before that validation interval.
     """
-    folds: list[dict[str, Any]] = []
-    for pct in range(30, 71, 5):
-        train_ratio = Decimal(pct) / Decimal(100)
-        train_end = int(n * train_ratio)
-        val_end = int(n * (train_ratio + Decimal("0.10")))
-        test_end = int(n * (train_ratio + Decimal("0.30")))
-        if not (seq_len + pred_len <= train_end and val_end - train_end >= pred_len
-                and test_end - val_end >= pred_len):
-            raise ValueError(f"{n} rows insufficient for fold train={pct}%")
+    first = max(seq_len + pred_len, minimum_train + validation_size)
+    last = n - recent_holdout - pred_len
+    if last < first:
+        raise ValueError(f"{n} rows insufficient for a 3-year train, validation, test and recent holdout")
+    import numpy as np
+    origins = sorted(set(int(x) for x in np.linspace(first, last, min(count, last-first+1))))
+    folds = []
+    for i, origin in enumerate(origins, 1):
+        val_start = origin - validation_size
+        test_end = origin + pred_len
         folds.append({
-            "fold_id": f"train_{pct:02d}",
-            "train_percentage": pct,
-            "segments": {
-                "train": [0, train_end],
-                "val": [train_end, val_end],
-                "test": [val_end, test_end],
-            },
+            "fold_id": f"origin_{i:02d}",
+            "origin_index": origin,
+            "segments": {"train": [0, val_start], "val": [val_start, origin], "test": [origin, test_end]},
             "valid_origin_ranges_inclusive": {
-                "train": [seq_len, train_end - pred_len],
-                "val": [train_end, val_end - pred_len],
-                "test": [val_end, test_end - pred_len],
+                "train": [seq_len, val_start-pred_len],
+                "val": [val_start, origin-pred_len],
+                "test": [origin, test_end-pred_len],
             },
-            "train_window_count_stride1": train_end - seq_len - pred_len + 1,
-            "val_window_count_stride1": val_end - train_end - pred_len + 1,
-            "test_window_count_stride1": test_end - val_end - pred_len + 1,
+            "train_window_count_stride1": val_start-seq_len-pred_len+1,
+            "val_window_count_stride1": validation_size-pred_len+1,
+            "test_window_count_stride1": 1,
         })
     return folds
 
@@ -104,10 +98,16 @@ def clean_one(path: Path, code: str, as_of: date | None) -> tuple[pd.DataFrame, 
     if as_of is not None:
         later_mask = raw["date"].dt.date > as_of
         excluded_later = int(later_mask.sum())
+        excluded_later_dates = raw.loc[later_mask, "date"].dt.strftime("%Y-%m-%d").tolist()
         raw = raw.loc[~later_mask].copy()
     else:
         excluded_later = 0
+        excluded_later_dates = []
+    if raw["date"].duplicated().any():
+        dupes = raw.loc[raw["date"].duplicated(keep=False), "date"].dt.strftime("%Y-%m-%d").tolist()[:20]
+        raise ValueError(f"{path}: duplicate raw dates; investigate, examples: {dupes}")
     halted = int(raw["tradestatus"].eq("0").sum())
+    halted_dates = raw.loc[raw["tradestatus"].eq("0"), "date"].dt.strftime("%Y-%m-%d").tolist()
     traded = raw.loc[raw["tradestatus"].eq("1")].copy()
     if traded.empty:
         raise ValueError(f"{path}: no active trading rows after filtering")
@@ -116,9 +116,11 @@ def clean_one(path: Path, code: str, as_of: date | None) -> tuple[pd.DataFrame, 
         raise ValueError(f"{path}: duplicate active trade dates; investigate, examples: {dupes}")
     for col in NUM_COLS:
         traded[col] = pd.to_numeric(traded[col], errors="coerce")
-    if not traded[NUM_COLS].notna().all().all():
-        missing_counts = traded[NUM_COLS].isna().sum().to_dict()
-        raise ValueError(f"{path}: missing/non-numeric values in active rows: {missing_counts}")
+    finite = np.isfinite(traded[NUM_COLS].to_numpy(dtype=float))
+    if not finite.all():
+        bad = np.argwhere(~finite)
+        examples = [{"row": int(i), "date": traded["date"].iloc[int(i)].strftime("%Y-%m-%d"), "column": NUM_COLS[int(j)]} for i,j in bad[:20]]
+        raise ValueError(f"{path}: non-finite active-row values; examples: {examples}")
     if not (traded[["open", "close", "high", "low"]] > 0).all().all():
         raise ValueError(f"{path}: non-positive OHLC price")
     if (traded[["volume", "amount"]] < 0).any().any():
@@ -141,7 +143,9 @@ def clean_one(path: Path, code: str, as_of: date | None) -> tuple[pd.DataFrame, 
         "source_sha256": sha256(path),
         "raw_rows": int(len(pd.read_csv(path, usecols=["date"], encoding="utf-8-sig"))),
         "excluded_after_as_of": excluded_later,
+        "excluded_after_as_of_dates": excluded_later_dates,
         "excluded_halted_tradestatus_0": halted,
+        "halted_dates": halted_dates,
         "processed_rows": int(len(out)),
         "first_trading_date": out["date"].iloc[0],
         "last_trading_date": out["date"].iloc[-1],
@@ -154,6 +158,7 @@ def clean_one(path: Path, code: str, as_of: date | None) -> tuple[pd.DataFrame, 
 
 def main() -> None:
     parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument("--config", type=Path, default=Path("config/stocks.json"))
     parser.add_argument("--input-dir", type=Path, default=Path("data/raw"))
     parser.add_argument("--output-dir", type=Path, default=Path("data/processed"))
     parser.add_argument("--splits-dir", type=Path, default=Path("data/splits"))
@@ -169,8 +174,10 @@ def main() -> None:
     args.output_dir.mkdir(parents=True, exist_ok=True)
     args.splits_dir.mkdir(parents=True, exist_ok=True)
     args.audit_dir.mkdir(parents=True, exist_ok=True)
+    stocks_cfg = json.loads(args.config.read_text(encoding="utf-8"))["stocks"]
     reports = []
-    for code, filename in STOCKS.items():
+    for stock in stocks_cfg:
+        code, filename = stock["query_code"], stock["output_file"]
         src = args.input_dir / filename
         if not src.exists():
             raise FileNotFoundError(f"Missing original CSV: {src}")

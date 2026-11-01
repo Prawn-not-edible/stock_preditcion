@@ -1,7 +1,7 @@
-"""后续阶段：在共同确定数据清洗、缺失值与特征处理规则后实现。"""
+"""Run the project's raw-data validation and model-table preparation."""
 
-def main():
-    raise NotImplementedError("后续阶段：在共同确定数据清洗、缺失值与特征处理规则后实现。")
+from prepare_stocks import main
+
 
 if __name__ == "__main__":
     main()

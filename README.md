@@ -47,4 +47,8 @@ git submodule update --init --recursive
 
 ## 当前阶段
 
-已实现项目结构、BaoStock 下载脚本、CSV 只读审计和离线测试。`prepare.py`、`analysis.py`、`backtest.py`、`predict_future.py` 仅为占位，尚未实现；未进行正式预处理、训练或预测。下一阶段将共同确定预处理规则后再训练模型。
+Phase 1 已实现项目结构、BaoStock 下载脚本、CSV 只读审计和离线测试。Phase 2 正在补充预处理、回测、训练和推理流程；其中完整训练与最终预测尚未完成，具体状态见下文阶段进度。
+
+### Phase 2 实验进度
+
+已实现基础预处理、六个扩展开发窗口 Manifest、官方 DLinear/iTransformer/TimeXer 外层训练器、近期滚动回测入口、正式推理/导出/校验入口。预处理和本地 CPU smoke 运行状态及 GPU 运行命令见 `docs/PHASE2_RUNBOOK.md`。完整 GPU 回测、模型选择和正式预测只有在远程服务器实际运行后才可标记完成；Smoke Test 数值不是正式预测。
