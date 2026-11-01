@@ -116,5 +116,6 @@
     "sz.000937": "db3213011d4698adbc77e04b650dd87142aa2fde42ce7a1598ff58e1dcf378f2",
     "sz.002128": "2416d185fb7ae09c7aa432ce7e7dc81adf980dc54ddc8453ede0add4df9386d4"
   },
-  "source_code_commit": "a2ebc267131a6928a72c607b0e841257af7862c2"
+  "source_code_commit": "a2ebc267131a6928a72c607b0e841257af7862c2",
+  "checkpoint_path": "results/phase4_joint_training/checkpoints/final_P2_TimeXer_2026-10-30.pt"
 }

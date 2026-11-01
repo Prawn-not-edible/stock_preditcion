@@ -94,7 +94,7 @@ def main():
             pred_open=p3.restore_open(anchor,alpha*pred_return)
             method=f"{selected['pool']}-Joint-Residual"
             used_model=model_name; used_alpha=alpha; source="trained_model"
-            stock_checkpoint=str(ckpt); stock_sha=checkpoint_sha; epoch_count=epochs
+            stock_checkpoint=ckpt.relative_to(ROOT).as_posix(); stock_sha=checkpoint_sha; epoch_count=epochs
         else:
             phase3_meta=json.loads((ROOT/"results/residual_phase3/final/metadata.json").read_text(encoding="utf-8"))
             m=next(x for x in phase3_meta if x["stock"]==stock)

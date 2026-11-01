@@ -53,7 +53,7 @@ Window totals by stage and pool: `{"development/P0": 49857, "development/P1": 49
 
 ## 最终预测与提交
 
-入选的 P2 TimeXer 以 2026-10-30 为训练截止日，使用该时点的 28 只煤炭股、81,861 个股票内训练窗口训练 12 epoch；epoch 数为三个历史开发 P2 TimeXer 拟合最佳 epoch 的中位数，近期标签未用于决定训练轮数。批次为 512，GPU 训练耗时约 55 秒，checkpoint SHA256 为 `83d646a1c54b6d2651eea6142ce8fbcf3375e574c5c16131048974799337c6b21`。
+入选的 P2 TimeXer 以 2026-10-30 为训练截止日，使用该时点的 28 只煤炭股、81,861 个股票内训练窗口训练 12 epoch；epoch 数为三个历史开发 P2 TimeXer 拟合最佳 epoch 的中位数，近期标签未用于决定训练轮数。批次为 512，GPU 训练耗时约 55 秒。最终 checkpoint 已随本分支上传到 `results/phase4_joint_training/checkpoints/final_P2_TimeXer_2026-10-30.pt`，SHA256 为 `83d646a1c54b6d2651eea6142ce8fbcf3375e574c5c16131048974799337c6b21`。
 
 |股票|最终方法|2026-11-02|2026-11-03|2026-11-04|2026-11-05|2026-11-06|
 |---|---|---:|---:|---:|---:|---:|
