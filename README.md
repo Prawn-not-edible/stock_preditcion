@@ -70,6 +70,12 @@ git submodule update --init --recursive
 
 Phase 3 的完整分析见 [`results/residual_phase3/FINAL_REPORT.md`](results/residual_phase3/FINAL_REPORT.md)，预测与实验说明见 [`docs/PHASE3_PREDICTION_RESULTS.md`](docs/PHASE3_PREDICTION_RESULTS.md)。
 
+### Phase 4：煤炭行业多股票联合 Residual 训练
+
+实验代码已在 `phase4-joint-training` 分支实现，复用 Phase 3 的 Residual 架构与目标，比较 P0 单股训练、P1 三目标股联合训练和 P2 按预测日期之前行业分类生成的煤炭股池联合训练。新增多股票 Dataset 保持每只股票序列独立，并采用逐股票训练期成交量/额标准化及均衡采样。近期窗口与 Phase 3 P0 完全配对，alpha 在历史开发窗口锁定。
+
+煤炭池 BaoStock 查询、数据清洗与正式 GPU 训练正在进行；本分支 README 与 `results/phase4_joint_training/EXPERIMENT_REPORT.md` 将以实际完成的查询、训练和对齐审计更新进度。原始行情与 checkpoint 不推送，公开代码、行业/数据审计及评价结果归档于 Phase 4 分支。
+
 ## GitHub 同步约定
 
 实验代码、数据审计、指标和文档通过阶段分支归档；提交时只暂存本轮相关文件。原始行情公开许可未确认前保留在本地，不推送。模型 checkpoint 不上传 GitHub。详见 `docs/GIT_WORKFLOW.md`。

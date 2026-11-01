@@ -57,57 +57,89 @@ def experiment_dates() -> list[str]:
     sessions=sorted(set.intersection(*date_sets))
     tail=[d for d in sessions if d<="2026-10-30"][-40:]
     if len(tail)<40: raise ValueError("fewer than 40 aligned recent target sessions")
-    selected.extend(tail[::5])
+    recent_starts=tail[::5]
+    # One dated snapshot before the 8 recent origins is a legal, conservative recent pool.
+    selected.append(recent_starts[0])
+    selected.append("2026-10-30")
     return sorted(set(selected))
 
 
-def build_pool(out: Path, start: str = "2014-01-01", end: str = "2026-10-30") -> pd.DataFrame:
+def build_pool(out: Path, start: str = "2014-01-01", end: str = "2026-10-30",
+               reuse_snapshots: bool = False) -> pd.DataFrame:
     import baostock as bs
     login = bs.login()
     if login.error_code != "0":
         raise RuntimeError(f"BaoStock login failed: {login.error_msg}")
     try:
-        basic = collect(bs.query_stock_basic())
-        snapshots = []
-        historical_supported = True
-        asof_dates = experiment_dates()
-        for asof in asof_dates:
-            try:
-                response = bs.query_stock_industry(date=asof)
-            except TypeError:
-                historical_supported = False
-                response = bs.query_stock_industry()
-            df = collect(response)
-            df["classification_asof"] = asof if historical_supported else "current_only"
-            snapshots.append(df)
-            if not historical_supported:
-                break
-        industries = pd.concat(snapshots, ignore_index=True, sort=False)
+        snapshot_path=out/"industry_membership.csv"
+        if reuse_snapshots:
+            if not snapshot_path.exists(): raise FileNotFoundError(snapshot_path)
+            industry_history=pd.read_csv(snapshot_path,dtype=str).fillna("")
+            industries=industry_history.copy()
+            basic_cols=[c for c in ("code","code_name","ipoDate","outDate","type","status") if c in industry_history]
+            basic=industry_history[basic_cols].drop_duplicates("code",keep="last")
+            asof_dates=sorted(set(industry_history.classification_asof))
+            historical_supported="current_only" not in asof_dates
+        else:
+            snapshots=[]; historical_supported=True; asof_dates=experiment_dates()
+            for asof in asof_dates:
+                print(f"query industry snapshot as-of {asof}",flush=True)
+                try: response=bs.query_stock_industry(date=asof)
+                except TypeError:
+                    historical_supported=False; response=bs.query_stock_industry()
+                df=collect(response)
+                print(f"industry snapshot {asof}: {len(df)} rows; fields={list(df.columns)}",flush=True)
+                df["classification_asof"]=asof if historical_supported else "current_only"
+                snapshots.append(df)
+                if not historical_supported: break
+            industries=pd.concat(snapshots,ignore_index=True,sort=False)
+        if not {"code", "industry"}.issubset(industries.columns):
+            raise ValueError(f"query_stock_industry fields changed: {industries.columns.tolist()}")
+        coal_codes={str(row.code).lower() for row in industries.itertuples()
+                    if A_SHARE.fullmatch(str(row.code).lower()) and is_coal(row.industry)}
+        candidate_codes=sorted(coal_codes | TARGETS)
+        if not reuse_snapshots:
+            # Query basic records per candidate; avoid the slow exchange-wide endpoint.
+            basic_rows=[]
+            for i,code in enumerate(candidate_codes,1):
+                response=bs.query_stock_basic(code=code)
+                if response.error_code!="0" and "未登录" in str(response.error_msg):
+                    bs.login(); response=bs.query_stock_basic(code=code)
+                row=collect(response)
+                if not row.empty: basic_rows.extend(row.to_dict("records"))
+                if i%20==0: print(f"stock basic candidates {i}/{len(candidate_codes)}",flush=True)
+            basic=pd.DataFrame(basic_rows)
         required_basic = {"code", "code_name", "ipoDate", "outDate", "type", "status"}
         if not required_basic.issubset(basic.columns):
             raise ValueError(f"query_stock_basic fields changed: {basic.columns.tolist()}")
-        if not {"code", "industry"}.issubset(industries.columns):
-            raise ValueError(f"query_stock_industry fields changed: {industries.columns.tolist()}")
         basic = basic.drop_duplicates("code", keep="last")
         industry_cols = [x for x in ("code", "code_name", "industry", "industryClassification", "industry_classification", "classification_asof") if x in industries]
         # Preserve every label (including non-coal snapshots) so as-of membership can reflect exits.
-        industry_history=industries.copy()
-        industry_history=industry_history.merge(basic[[c for c in basic.columns if c not in industry_history.columns or c=="code"]],on="code",how="left",suffixes=("","_basic"))
-        for col in ("code_name",):
-            basic_col=f"{col}_basic"
-            if basic_col in industry_history: industry_history[col]=industry_history[col].fillna(industry_history[basic_col])
+        industry_history=industries[industries.code.astype(str).str.lower().isin(candidate_codes)].copy()
+        if not reuse_snapshots:
+            basic_extra=basic.rename(columns={c:f"{c}_basic" for c in basic.columns if c!="code"})
+            industry_history=industry_history.merge(basic_extra,on="code",how="left")
+            for col in basic.columns:
+                if col=="code": continue
+                extra=f"{col}_basic"
+                if extra in industry_history:
+                    if col in industry_history: industry_history[col]=industry_history[col].fillna(industry_history[extra])
+                    else: industry_history[col]=industry_history[extra]
         coal = industries[industries.industry.map(is_coal)].copy()
         coal["pool_reason"] = "BaoStock industry label matched coal/mining keyword"
         target = basic[basic.code.isin(TARGETS)].copy()
         target = target.merge(industries.drop_duplicates("code", keep="last")[industry_cols], on=[c for c in ("code", "code_name") if c in target.columns and c in industry_cols], how="left") if "industry" not in target.columns else target
         target["pool_reason"] = "required target stock; included for P1/P2"
         merged = pd.concat([coal, target], ignore_index=True, sort=False)
-        merged = merged.merge(basic[[c for c in basic.columns if c not in merged.columns or c == "code"]], on="code", how="left", suffixes=("", "_basic"))
+        basic_extra=basic.rename(columns={c:f"{c}_basic" for c in basic.columns if c!="code"})
+        merged=merged.merge(basic_extra,on="code",how="left")
         # Keep one observation per security and dated classification; history availability is not an eligibility rule.
-        for col in ("code_name", "industry"):
-            basic_col = f"{col}_basic"
+        for col in basic.columns:
+            if col=="code": continue
+            basic_col=f"{col}_basic"
             if basic_col in merged:
-                merged[col] = merged[col].fillna(merged[basic_col])
+                if col in merged: merged[col]=merged[col].fillna(merged[basic_col])
+                else: merged[col]=merged[basic_col]
         merged["code"] = merged.code.astype(str).str.lower()
         merged["security_type"] = merged.type.astype(str)
         merged = merged[merged.code.map(lambda x: bool(A_SHARE.fullmatch(x))) & merged.security_type.eq("1")].copy()
@@ -153,10 +185,28 @@ def download_pool(pool: pd.DataFrame, raw_dir: Path, processed_dir: Path, manife
         for _, stock in pool.drop_duplicates("code").iterrows():
             code = stock.code
             raw_path = raw_dir / f"{code.replace('.', '_')}.csv"
+            out_date=str(stock.get("outDate", "") or "")
+            if out_date and out_date < start:
+                rows.append({"code":code,"name":stock.get("code_name",""),"industry":stock.get("industry",""),
+                    "classification_asof":stock.get("classification_asof",""),"pool_reason":stock.get("pool_reason",""),
+                    "ipo_date":stock.get("ipoDate",""),"out_date":out_date,"raw_rows":0,"valid_trading_rows":0,
+                    "suspended_rows":0,"potential_unadjusted_jump_count_ge_20pct":0,"potential_jump_dates":"",
+                    "raw_file":"","processed_file":"","exclusion_reason":"delisted before requested range"})
+                print(f"{code}: excluded; delisted {out_date} before {start}",flush=True)
+                continue
             if raw_path.exists() and not overwrite:
                 raw = pd.read_csv(raw_path, dtype=str, encoding="utf-8-sig", keep_default_na=False)
             else:
-                _, raw = query_rows(bs, code, start, end)
+                try: _, raw = query_rows(bs, code, start, end)
+                except ValueError as exc:
+                    if "没有返回记录" not in str(exc): raise
+                    rows.append({"code":code,"name":stock.get("code_name",""),"industry":stock.get("industry",""),
+                        "classification_asof":stock.get("classification_asof",""),"pool_reason":stock.get("pool_reason",""),
+                        "ipo_date":stock.get("ipoDate",""),"out_date":out_date,"raw_rows":0,"valid_trading_rows":0,
+                        "suspended_rows":0,"potential_unadjusted_jump_count_ge_20pct":0,"potential_jump_dates":"",
+                        "raw_file":"","processed_file":"","exclusion_reason":"BaoStock returned no rows in requested date range"})
+                    print(f"{code}: excluded; no rows in requested date range",flush=True)
+                    continue
                 atomic_write_csv(raw_path, raw, overwrite=True)
             absent = sorted(set(REQUIRED_RAW) - set(raw.columns))
             if absent:
@@ -236,8 +286,9 @@ def main():
     p.add_argument("--raw-dir", type=Path, default=ROOT / "data/coal_pool/raw")
     p.add_argument("--processed-dir", type=Path, default=ROOT / "data/coal_pool/processed")
     p.add_argument("--overwrite", action="store_true")
+    p.add_argument("--reuse-snapshots", action="store_true", help="reuse the saved dated industry query")
     a = p.parse_args()
-    pool = build_pool(a.pool_dir, a.start, a.end)
+    pool = build_pool(a.pool_dir, a.start, a.end, a.reuse_snapshots)
     rows = download_pool(pool, a.raw_dir, a.processed_dir, a.pool_dir / "pool_manifest.csv", a.start, a.end, a.overwrite)
     print(f"pool securities={pool.code.nunique()}, processed={sum(not r['exclusion_reason'] for r in rows)}")
 

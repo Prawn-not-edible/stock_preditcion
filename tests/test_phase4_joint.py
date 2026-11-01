@@ -67,6 +67,15 @@ class MultiStockTimeIsolationTests(unittest.TestCase):
         self.assertEqual(len(recent), 8)
         self.assertTrue(all(len(set(dates)) == 5 for _, dates in dev + recent))
 
+    def test_recent_common_targets_match_all_phase3_p0_pairs(self):
+        windows = {";".join(days) for _, days in p4.choose_recent_dates(
+            {s: ROOT / "data/processed" / f"{s.replace('.', '_')}.csv" for s in p4.TARGETS})}
+        old = pd.read_csv(ROOT / "results/residual_phase3/recent_v1_windows.csv")
+        for stock in p4.TARGETS:
+            for model in p4.MODELS:
+                found = set(old[(old.stock == stock) & (old.model == model)].target_dates)
+                self.assertTrue(windows.issubset(found))
+
 
 if __name__ == "__main__":
     unittest.main()

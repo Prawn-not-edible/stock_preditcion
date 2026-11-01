@@ -1,6 +1,6 @@
 """Lock development alphas and summarize strictly paired Phase 4 forecasts."""
 from __future__ import annotations
-import json, sys
+import ast, json, sys
 from pathlib import Path
 import numpy as np
 import pandas as pd
@@ -78,6 +78,30 @@ def main():
           "equal_weight_mean_nmse":g.mean_nmse.mean(),"equal_weight_median_nmse":g.median_nmse.mean(),
           "mean_baseline_wins_per_stock":g.beats_baseline_windows.mean(),"n_stock":g.stock.nunique()})
     pd.DataFrame(comparisons).to_csv(OUT/"model_comparison.csv",index=False)
+    run_tables=[]
+    for stage in ("development","recent_40d"):
+        path=OUT/stage/"training_runs.csv"
+        if path.exists():
+            q=pd.read_csv(path); q["stage"]=stage; run_tables.append(q)
+    run_all=pd.concat(run_tables,ignore_index=True) if run_tables else pd.DataFrame()
+    perf_df=pd.DataFrame()
+    if not run_all.empty:
+        (OUT/"pool_audit").mkdir(parents=True,exist_ok=True)
+        run_all.to_csv(OUT/"pool_audit/training_fits.csv",index=False)
+        counts=[]
+        for _,r in run_all.iterrows():
+            try: stock_counts=ast.literal_eval(str(r.get("sample_counts","{}")))
+            except Exception: stock_counts={}
+            for stock,count in stock_counts.items():
+                counts.append({"stage":r.stage,"pool":r.pool,"origin_date":r.origin_date,"model":r.model,
+                               "stock":stock,"training_windows":int(count)})
+        pd.DataFrame(counts).to_csv(OUT/"pool_audit/training_window_counts.csv",index=False)
+        perf=[]
+        for (pool,model),g in run_all.groupby(["pool","model"]):
+            perf.append({"pool":pool,"model":model,"fits":len(g),"parameter_count":int(g.params.iloc[0]),
+                "mean_fit_seconds":float(g.runtime_seconds.mean()),"total_fit_seconds":float(g.runtime_seconds.sum()),
+                "mean_peak_gpu_memory_mb":float(g.peak_gpu_memory_mb.mean())})
+        perf_df=pd.DataFrame(perf)
     # Conservative candidate per stock: must improve both Baseline and P0 with stable windows.
     picks={}
     for stock in p4.TARGETS:
@@ -98,14 +122,24 @@ def main():
         "not_independent_test":True,"stocks":picks},ensure_ascii=False,indent=2),encoding="utf-8")
     report=["# Phase 4 多股票联合 Residual 训练实验报告","",
       "P0 是 Phase 3 单股票 Residual；P1 是三只目标煤炭股共享模型；P2 使用 BaoStock 煤炭行业池共享模型。全部结果以相同目标日期配对。近期 40 个交易日已用于开发和选模，不能称为独立测试集。","",
-      "## 近期同日期结果","","|股票|Baseline NMSE|P0 Residual|P1 Joint|P2 Coal Pool|","|---|---:|---:|---:|---:|"]
+      "## 近期同日期结果","","每行明确给出模型，P0/P1/P2 单元格同时报告锁定 alpha，避免跨模型挑选后隐藏候选来源。","",
+      "|股票|模型|Last Close NMSE|P0 NMSE (alpha)|P1 NMSE (alpha)|P2 NMSE (alpha)|","|---|---|---:|---:|---:|---:|"]
     for stock in p4.TARGETS:
-        sg=summaries[summaries.stock.eq(stock)]
-        vals={pool:float(sg[sg.pool.eq(pool)].mean_nmse.mean()) for pool in ("P0","P1","P2")}
+      for model in p4.MODELS:
+        sg=summaries[(summaries.stock==stock)&(summaries.model==model)]
         base=float(baseline[baseline.stock.eq(stock)].nmse.mean())
-        report.append(f"|{stock}|{base:.8f}|{vals['P0']:.8f}|{vals['P1']:.8f}|{vals['P2']:.8f}|")
+        vals={pool:sg[sg.pool.eq(pool)].iloc[0] for pool in ("P0","P1","P2")}
+        report.append(f"|{stock}|{model}|{base:.8f}|{vals['P0'].mean_nmse:.8f} ({vals['P0'].alpha:.2f})|{vals['P1'].mean_nmse:.8f} ({vals['P1'].alpha:.2f})|{vals['P2'].mean_nmse:.8f} ({vals['P2'].alpha:.2f})|")
     report += ["","逐模型、逐股票 alpha、窗口数、步长 NMSE、MAE/RMSE、Baseline 胜场、变化率相关性见 `per_stock_summary.csv`。Alpha 在开发集锁定并在近期固定；P0 alpha 直接继承 Phase 3 锁定值。","",
       "## 最终选择","", "未通过保守规则的股票保留 Phase 3 正式预测，不覆盖已验证提交 CSV。", ""]
+    report += ["","## Training size and runtime","","Full fit metadata and sample counts are in `pool_audit/training_fits.csv` and `training_window_counts.csv`.","",
+      "|Pool|Model|Fits|Parameters|Mean seconds/fit|Total seconds|Peak GPU MiB|","|---|---|---:|---:|---:|---:|---:|"]
+    if not perf_df.empty:
+      for _,r in perf_df.iterrows(): report.append(f"|{r.pool}|{r.model}|{int(r.fits)}|{int(r.parameter_count)}|{r.mean_fit_seconds:.2f}|{r.total_fit_seconds:.2f}|{r.mean_peak_gpu_memory_mb:.1f}|")
+    if not run_all.empty:
+      counts=pd.read_csv(OUT/"pool_audit/training_window_counts.csv")
+      totals=counts.groupby(["stage","pool"]).training_windows.sum().to_dict()
+      report += ["","Window totals by stage and pool: `"+json.dumps({f"{k[0]}/{k[1]}":int(v) for k,v in totals.items()},ensure_ascii=False)+"`.",""]
     for stock,choice in picks.items(): report.append(f"- {stock}: `{choice['pool']}` / `{choice['model']}` alpha={choice['alpha']} — {choice['reason']}")
     report += ["","## 数据、隔离和运行产物","","股票池查询、原始/处理记录、停牌数、异常跳变、训练窗口量、训练参数量、耗时和 checkpoint 哈希分别见 `pool_audit/`、`development/` 与 `recent_40d/`。每个训练窗口的标签均严格截至各自统一日期边界；逐股票成交量/额 scaler 只在训练范围拟合。","","Phase 3 正式预测与 Phase 2 历史结果保持原样。",""]
     (OUT/"EXPERIMENT_REPORT.md").write_text("\n".join(report),encoding="utf-8")
