@@ -1,0 +1,41 @@
+{
+  "source": "BaoStock query_stock_basic and query_stock_industry",
+  "queried_at": "2026-11-01",
+  "history_range": [
+    "2014-01-01",
+    "2026-10-30"
+  ],
+  "industry_fields": [
+    "updateDate",
+    "code",
+    "code_name",
+    "industry",
+    "industryClassification",
+    "classification_asof",
+    "ipoDate",
+    "outDate",
+    "type",
+    "status"
+  ],
+  "basic_fields": [
+    "code",
+    "code_name",
+    "ipoDate",
+    "outDate",
+    "type",
+    "status"
+  ],
+  "historical_classification_supported": true,
+  "classification_snapshots_requested": [
+    "2019-07-01",
+    "2022-07-01",
+    "2025-07-01",
+    "2026-08-28",
+    "2026-10-30"
+  ],
+  "selection_rule": "A-share common stocks with BaoStock coal-mining classifications; mixed petroleum/coal/other-fuels class admitted only when security name contains coal/coking characters (煤、焦、炭); target stocks explicitly retained.",
+  "limitations": [
+    "BaoStock may not expose delisted firms in current industry snapshots; surviving-current-classification bias remains.",
+    "No historical industry membership data was inferred when API did not support dated queries."
+  ]
+}
