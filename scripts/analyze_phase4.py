@@ -124,7 +124,7 @@ def main():
             r=viable.sort_values(["mean_nmse","median_nmse"]).iloc[0]
             chosen={"pool":r.pool,"model":r.model,"alpha":float(r.alpha),"reason":"Met conservative joint selection rule."}
         picks[stock]=chosen
-    (OUT/"final_model_selection.json").write_text(json.dumps({"as_of":AS_OF,"recent_windows":8,
+    (OUT/"final_model_selection.json").write_text(json.dumps({"as_of":p4.AS_OF,"recent_windows":8,
         "not_independent_test":True,"stocks":picks},ensure_ascii=False,indent=2),encoding="utf-8")
     report=["# Phase 4 多股票联合 Residual 训练实验报告","",
       "P0 是 Phase 3 单股票 Residual；P1 是三只目标煤炭股共享模型；P2 使用 BaoStock 煤炭行业池共享模型。全部结果以相同目标日期配对。近期 40 个交易日已用于开发和选模，不能称为独立测试集。","",
