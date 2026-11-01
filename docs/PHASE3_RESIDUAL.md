@@ -18,7 +18,7 @@ DLinear 仍是官方结构，按变量独立分解/投影，不融合变量间�
 
 第一层为 3 股票 × 3 模型 × 3 起点，共 27 次训练。严格沿用 `data/splits/*.json` 中每个 origin 的 train、validation 和 test 边界；训练样本标签不会跨过 train_end，验证样本标签不会跨过 test origin。第二层取近期保留区最后 40 个交易日，origin 为这 40 天内每 5 天一个、共 8 个；每 20 个交易日重训一次，使用截至重训 origin 可见的数据和最近 126 个已知交易日验证，共 18 次训练。一个 20 日周期内权重固定，输入窗口随 origin 更新。
 
-优化器、学习率、epoch 上限、early stopping 和随机种子沿用 Phase 2：Adam、0.001、最多 50 epochs、patience 7、seed 2026。为减少小批次 kernel launch 和数据传输开销，Phase 3 正式 GPU 运行统一用 batch 128；训练与验证均启用 pinned memory/异步传输，CUDA 上使用 PyTorch `float32_matmul_precision=high`。这不会改变模型结构、标签、切分、优化器或 early stopping；batch 较大意味着每 epoch 更新次数更少，故它作为明确记录的运行配置，并对全部 45 次训练统一使用。远端每次运行生成 `experiment_config.json`，记录代码提交、处理数据哈希和完整设置。
+优化器、学习率、epoch 上限、early stopping 和随机种子沿用 Phase 2：Adam、0.001、最多 50 epochs、patience 7、seed 2026。为减少小批次 kernel launch 和数据传输开销，Phase 3 正式 GPU 运行统一用 batch 128；训练与验证均启用 pinned memory/异步传输，CUDA 上使用 PyTorch `float32_matmul_precision=high`。这不会改变模型结构、标签、切分、优化器或 early stopping；batch 较大意味着每 epoch 更新次数更少，故它作为明确记录的运行配置，并对全部 45 次训练统一使用。远端分别生成 `experiment_config_development.json`、`experiment_config_recent.json`，记录代码提交、处理数据哈希和完整设置。
 
 ## 执行命令
 

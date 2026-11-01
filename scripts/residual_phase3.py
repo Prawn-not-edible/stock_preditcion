@@ -734,7 +734,8 @@ def main() -> None:
             "e_layers": 2, "n_heads": 4, "dropout": 0.1, "label_len": 30,
             "features": "MS", "use_norm": True},
         "phase2_v0_files": [str(a.v0_development), str(a.v0_recent)]}
-    (a.phase_dir / "experiment_config.json").write_text(json.dumps(experiment_config, ensure_ascii=False, indent=2), encoding="utf-8")
+    config_path = a.phase_dir / f"experiment_config_{a.mode}.json"
+    config_path.write_text(json.dumps(experiment_config, ensure_ascii=False, indent=2), encoding="utf-8")
     if a.mode == "development":
         run_development(opts, a.phase_dir, a.v0_development)
     elif a.mode == "recent":
