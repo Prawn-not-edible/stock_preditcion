@@ -1,0 +1,58 @@
+{
+  "source": "BaoStock",
+  "query_date": "2026-11-01",
+  "start_date": "2014-01-01",
+  "end_date": "2026-10-30",
+  "pool_size": 32,
+  "security_codes": [
+    "sh.600121",
+    "sh.600123",
+    "sh.600157",
+    "sh.600188",
+    "sh.600256",
+    "sh.600348",
+    "sh.600395",
+    "sh.600397",
+    "sh.600403",
+    "sh.600508",
+    "sh.600546",
+    "sh.600714",
+    "sh.600740",
+    "sh.600758",
+    "sh.600792",
+    "sh.600925",
+    "sh.600971",
+    "sh.600985",
+    "sh.601001",
+    "sh.601088",
+    "sh.601101",
+    "sh.601225",
+    "sh.601666",
+    "sh.601699",
+    "sh.601898",
+    "sh.601918",
+    "sz.000552",
+    "sz.000571",
+    "sz.000780",
+    "sz.000937",
+    "sz.000983",
+    "sz.002128"
+  ],
+  "target_codes": [
+    "sh.601088",
+    "sh.601225",
+    "sz.000983"
+  ],
+  "industry_classification_asofs": [
+    "2019-07-01",
+    "2022-07-01",
+    "2025-07-01",
+    "2026-08-28",
+    "2026-10-30"
+  ],
+  "membership_file": "data/coal_pool/manifests/industry_membership.csv",
+  "limitations": [
+    "Current-industry endpoint may omit delisted historical firms.",
+    "Dated classification snapshots are applied only at or before each backtest origin."
+  ]
+}

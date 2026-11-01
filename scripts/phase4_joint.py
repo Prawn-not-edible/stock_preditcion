@@ -396,7 +396,9 @@ def main():
     try:
         import subprocess
         commit=subprocess.check_output(["git","rev-parse","HEAD"],cwd=ROOT,text=True).strip()
-    except Exception: commit="unknown"
+    except Exception:
+        marker=ROOT/"PHASE4_COMMIT.txt"
+        commit=marker.read_text(encoding="utf-8").strip() if marker.exists() else "unknown"
     (a.out/"configs").mkdir(parents=True,exist_ok=True)
     membership_config={}
     for d,_ in dates:

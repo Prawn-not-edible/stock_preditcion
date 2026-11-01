@@ -108,12 +108,18 @@ def main():
         sg=summaries[summaries.stock.eq(stock)]
         candidates=sg[sg.pool.isin(["P1","P2"])].copy()
         candidates["improvement_vs_p0"]=candidates.relative_improvement_vs_P0
+        base_stock=baseline[baseline.stock.eq(stock)]
+        baseline_median=float(base_stock.nmse.median())
         viable=candidates[(candidates.relative_improvement_vs_baseline>=0.05)&
                           (candidates.relative_improvement_vs_P0>=0.05)&
+                          (candidates.median_nmse<baseline_median)&
+                          (candidates.median_nmse<candidates.apply(
+                              lambda r: p0.loc[(stock,r.model),"median_nmse"],axis=1))&
                           (candidates.beats_baseline_windows>=5)]
         if viable.empty:
-            chosen={"pool":"P3-LastCloseBaseline","model":"LastCloseBaseline","alpha":0.0,
-                    "reason":"No joint candidate met >=5% improvement vs Baseline and P0 plus >=5/8 Baseline wins."}
+            chosen={"pool":"Phase3-Prediction","model":"Phase3-selected model or Last Close as recorded in Phase 3",
+                    "alpha":None,
+                    "reason":"No joint candidate met >=5% mean improvement vs Baseline and P0, better median NMSE than both, and >=5/8 Baseline wins."}
         else:
             r=viable.sort_values(["mean_nmse","median_nmse"]).iloc[0]
             chosen={"pool":r.pool,"model":r.model,"alpha":float(r.alpha),"reason":"Met conservative joint selection rule."}
