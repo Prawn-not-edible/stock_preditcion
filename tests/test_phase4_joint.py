@@ -81,6 +81,9 @@ class MultiStockTimeIsolationTests(unittest.TestCase):
         self.assertTrue(p4.is_coal_label("石油、煤炭及其他燃料加工业", "山西焦化"))
         self.assertFalse(p4.is_coal_label("石油、煤炭及其他燃料加工业", "某石油化工"))
 
+    def test_recent_refit_schedule_is_two_20_session_cycles(self):
+        self.assertEqual([i // p4.RECENT_WINDOWS_PER_FIT for i in range(8)], [0] * 4 + [1] * 4)
+
 
 if __name__ == "__main__":
     unittest.main()

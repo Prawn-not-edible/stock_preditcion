@@ -25,6 +25,7 @@ TARGETS = ["sh.601088", "sh.601225", "sz.000983"]
 MODELS = p3.MODELS
 ALPHAS = p3.ALPHAS
 AS_OF = "2026-10-30"
+RECENT_WINDOWS_PER_FIT = 4  # 4 non-overlapping 5-day windows = 20 trading days.
 POOL_PROCESSED = ROOT / "data/coal_pool/processed"
 OUT = ROOT / "results/phase4_joint_training"
 
@@ -269,6 +270,24 @@ def fit_shared(model_name, files, members, target_stock, origin, opts, checkpoin
       "validation_start":val_start,"train_cutoff_by_stock":train_ds.train_cutoffs}
 
 
+def load_predictor(model_name, checkpoint, device):
+    saved = torch.load(checkpoint, map_location="cpu", weights_only=False)
+    dev = torch.device(device)
+    model = p3.make_model(model_name).to(dev)
+    model.load_state_dict(saved["state_dict"]); model.eval()
+    return {"model":model,"device":dev,"volume_stats":saved["config"]["volume_stats"]}
+
+
+def predict_at_origin(predictor, files, target, origin):
+    df, raw = read_processed(files[target]); idx = df.date.astype(str).tolist().index(origin)
+    stats = predictor["volume_stats"][target]
+    x, anchor = p3.build_features(raw, idx, np.asarray(stats["mean"]), np.asarray(stats["scale"]))
+    with torch.no_grad():
+        ret = p3.output_return(predictor["model"], torch.from_numpy(x[None]).to(predictor["device"])).cpu().numpy()[0]
+    if ret.shape != (p3.PRED_LEN,) or not np.isfinite(ret).all(): raise ValueError("invalid cached pooled prediction")
+    return {"pred_return":ret,"anchor":anchor}
+
+
 def evaluate_one(pred_return, actual_return, anchor):
     return p3.residual_metrics(np.asarray(pred_return), np.asarray(actual_return), anchor)
 
@@ -302,9 +321,9 @@ def main():
     if a.mode=="development": dates=choose_dev_dates({s:files[s] for s in TARGETS})
     else: dates=choose_recent_dates({s:files[s] for s in TARGETS})
     a.out.mkdir(parents=True,exist_ok=True)
-    configs=[]; predictions=[]; runrows=[]; fit_count=0
+    configs=[]; predictions=[]; runrows=[]; fit_count=0; recent_cache={}
     for pool in (("P0","P1","P2") if a.mode=="development" else ("P0","P1","P2")):
-      for origin,target_dates in dates:
+      for window_index,(origin,target_dates) in enumerate(dates):
         members=membership_for(origin,pool)
         for model_name in MODELS:
           # P0 remains stock-specific; P1/P2 fit one shared model per model/date.
@@ -314,12 +333,31 @@ def main():
               p0=load_phase3_recent(target,model_name,target_dates)
               append_rows(predictions,a.mode,pool,target,model_name,origin,target_dates,p0,None)
               continue
-            if shared_fit is None or pool=="P0":
+            cache_key=(pool,model_name,window_index//RECENT_WINDOWS_PER_FIT)
+            if a.mode=="recent" and pool!="P0" and cache_key in recent_cache:
+              cached=recent_cache[cache_key]
+              shared_fit=cached["fit"]
+              target_fit=predict_at_origin(cached["predictor"],files,target,origin)
+            elif shared_fit is None or pool=="P0":
               fit_members=[target] if pool=="P0" else members
+              fit_origin=dates[(window_index//RECENT_WINDOWS_PER_FIT)*RECENT_WINDOWS_PER_FIT][0] if a.mode=="recent" and pool!="P0" else origin
               shared_fit=fit_shared(model_name,files,fit_members,target,origin,SimpleNamespace(**vars(a)),
-                    a.out/"checkpoints"/f"{a.mode}_{pool}_{target.replace('.', '_')+'_' if pool=='P0' else ''}{model_name}_{origin}.pt")
+                    a.out/"checkpoints"/f"{a.mode}_{pool}_{target.replace('.', '_')+'_' if pool=='P0' else ''}{model_name}_{fit_origin}.pt")
               fit_count+=1
-            target_fit=shared_fit["target_predictions"][target]
+              if a.mode=="recent" and pool!="P0":
+                predictor=load_predictor(model_name,shared_fit["checkpoint"],shared_fit["device"])
+                recent_cache[cache_key]={"fit":shared_fit,"predictor":predictor}
+                runrows.append({"phase":a.mode,"pool":pool,"target_stock":"shared","origin_date":fit_origin,"model":model_name,
+                                **{k:v for k,v in shared_fit.items() if k!="target_predictions"}})
+                target_fit=shared_fit["target_predictions"][target]
+              else:
+                target_fit=shared_fit["target_predictions"][target]
+            else:
+              target_fit=shared_fit["target_predictions"][target]
+            if a.mode=="recent" and pool!="P0" and cache_key in recent_cache and shared_fit is not None:
+              # The first target uses the just-fitted forecast; later windows infer on their latest 60 rows.
+              if origin != dates[(window_index//RECENT_WINDOWS_PER_FIT)*RECENT_WINDOWS_PER_FIT][0]:
+                target_fit=predict_at_origin(recent_cache[cache_key]["predictor"],files,target,origin)
             df,raw=read_processed(files[target]); origin_idx=list(df.date.astype(str)).index(origin)
             actual,anchor=p3.build_target(raw,origin_idx)
             if not math.isclose(anchor,target_fit["anchor"],abs_tol=1e-8): raise AssertionError("anchor mismatch")
@@ -335,8 +373,9 @@ def main():
                 "best_epoch":shared_fit["best_epoch"],"train_loss":shared_fit["train_loss"],"validation_loss":shared_fit["validation_loss"],
                 "runtime_seconds":shared_fit["runtime_seconds"],"params":shared_fit["params"],"training_samples":shared_fit["training_samples"],
                 "checkpoint_sha256":shared_fit["checkpoint_sha256"]})
-            runrows.append({"phase":a.mode,"pool":pool,"target_stock":target if pool=="P0" else "shared",
-              "origin_date":origin,"model":model_name,**{k:v for k,v in shared_fit.items() if k not in ("target_predictions",)}})
+            if not (a.mode=="recent" and pool!="P0"):
+              runrows.append({"phase":a.mode,"pool":pool,"target_stock":target if pool=="P0" else "shared",
+                "origin_date":origin,"model":model_name,**{k:v for k,v in shared_fit.items() if k not in ("target_predictions",)}})
             print(f"{a.mode} {pool} {model_name} {origin} -> {target}: epoch={shared_fit['best_epoch']} val={shared_fit['validation_loss']:.6g} sec={shared_fit['runtime_seconds']:.1f}",flush=True)
             if a.test_max_fits and fit_count>=a.test_max_fits: break
           if a.test_max_fits and fit_count>=a.test_max_fits: break
