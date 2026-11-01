@@ -1,0 +1,1 @@
+Exploratory batch-32 run stopped after 14 of 27 development fits when the user requested a faster GPU configuration. Its partial metrics/checkpoints were excluded from Phase 3 V0/V1/V2 comparisons. All reported development and recent results use batch 128.

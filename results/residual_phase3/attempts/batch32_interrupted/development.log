@@ -1,0 +1,53 @@
+fatal: not a git repository (or any parent up to mount point /root)
+Stopping at filesystem boundary (GIT_DISCOVERY_ACROSS_FILESYSTEM not set).
+development sh.601088 DLinear origin_02: best_epoch=13 train_mse=0.0010706375 val_mse=0.00045609148 runtime=2.53s
+development sh.601088 DLinear origin_04: best_epoch=4 train_mse=0.0010041471 val_mse=0.0013610688 runtime=2.02s
+development sh.601088 DLinear origin_06: best_epoch=4 train_mse=0.00090703188 val_mse=0.00037793213 runtime=2.16s
+development sh.601088 iTransformer origin_02: best_epoch=5 train_mse=0.00080289647 val_mse=0.00058175405 runtime=4.80s
+development sh.601088 iTransformer origin_04: best_epoch=4 train_mse=0.00073557894 val_mse=0.0021339719 runtime=8.03s
+development sh.601088 iTransformer origin_06: best_epoch=3 train_mse=0.00074136501 val_mse=0.00053923015 runtime=12.26s
+development sh.601088 TimeXer origin_02: best_epoch=3 train_mse=0.0017675159 val_mse=0.00060561869 runtime=7.78s
+development sh.601088 TimeXer origin_04: best_epoch=4 train_mse=0.0015347533 val_mse=0.0020735152 runtime=14.87s
+development sh.601088 TimeXer origin_06: best_epoch=3 train_mse=0.0015050826 val_mse=0.00053977652 runtime=17.75s
+development sh.601225 DLinear origin_02: best_epoch=13 train_mse=0.0020342653 val_mse=0.00077228646 runtime=2.37s
+development sh.601225 DLinear origin_04: best_epoch=11 train_mse=0.0016685574 val_mse=0.0018751201 runtime=3.49s
+development sh.601225 DLinear origin_06: best_epoch=3 train_mse=0.0014411902 val_mse=0.0006966495 runtime=2.82s
+development sh.601225 iTransformer origin_02: best_epoch=12 train_mse=0.0016262918 val_mse=0.00096134213 runtime=8.10s
+development sh.601225 iTransformer origin_04: best_epoch=9 train_mse=0.0013547956 val_mse=0.0025791861 runtime=12.84s
+Traceback (most recent call last):
+  File "/root/autodl-tmp/phase3-run/scripts/residual_phase3.py", line 742, in <module>
+    main()
+  File "/root/autodl-tmp/phase3-run/scripts/residual_phase3.py", line 731, in main
+    run_development(opts, a.phase_dir, a.v0_development)
+  File "/root/autodl-tmp/phase3-run/scripts/residual_phase3.py", line 458, in run_development
+    fit = history_dataset(raw, train_end, val_start, origin, opts.device, fit_opts, False, checkpoint)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/root/autodl-tmp/phase3-run/scripts/residual_phase3.py", line 183, in history_dataset
+    optimizer.step(); losses.append(float(loss.item()))
+    ^^^^^^^^^^^^^^^^
+  File "/root/miniconda3/lib/python3.12/site-packages/torch/optim/optimizer.py", line 516, in wrapper
+    out = func(*args, **kwargs)
+          ^^^^^^^^^^^^^^^^^^^^^
+  File "/root/miniconda3/lib/python3.12/site-packages/torch/optim/optimizer.py", line 81, in _use_grad
+    ret = func(*args, **kwargs)
+          ^^^^^^^^^^^^^^^^^^^^^
+  File "/root/miniconda3/lib/python3.12/site-packages/torch/optim/adam.py", line 247, in step
+    adam(
+  File "/root/miniconda3/lib/python3.12/site-packages/torch/optim/optimizer.py", line 149, in maybe_fallback
+    return func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "/root/miniconda3/lib/python3.12/site-packages/torch/optim/adam.py", line 949, in adam
+    func(
+  File "/root/miniconda3/lib/python3.12/site-packages/torch/optim/adam.py", line 611, in _multi_tensor_adam
+    grouped_tensors = Optimizer._group_tensors_by_device_and_dtype(
+                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/root/miniconda3/lib/python3.12/site-packages/torch/optim/optimizer.py", line 545, in _group_tensors_by_device_and_dtype
+    return _group_tensors_by_device_and_dtype(tensorlistlist, with_indices)  # type: ignore[return-value, arg-type]
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/root/miniconda3/lib/python3.12/site-packages/torch/utils/_contextlib.py", line 120, in decorate_context
+    return func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "/root/miniconda3/lib/python3.12/site-packages/torch/utils/_foreach_utils.py", line 47, in _group_tensors_by_device_and_dtype
+    return torch._C._group_tensors_by_device_and_dtype(tensorlistlist, with_indices)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+KeyboardInterrupt

@@ -1,0 +1,65 @@
+[
+  {
+    "stock": "sh.601088",
+    "method": "LastCloseBaseline",
+    "model": "LastCloseBaseline",
+    "alpha": 0.0,
+    "prediction_source": "LastCloseBaseline",
+    "training_cutoff": "2026-10-30",
+    "last_input_date": "2026-10-30",
+    "last_known_close": 51.9900016784668,
+    "checkpoint": "",
+    "checkpoint_sha256": "",
+    "epoch_reference_median": null,
+    "predicted_dates": [
+      "2026-11-02",
+      "2026-11-03",
+      "2026-11-04",
+      "2026-11-05",
+      "2026-11-06"
+    ],
+    "source_csv_sha256": "0149b80141cc2d487f7d265bc68d57eaadcd9861561dbd311edae190d0b98313"
+  },
+  {
+    "stock": "sh.601225",
+    "method": "LastCloseBaseline",
+    "model": "LastCloseBaseline",
+    "alpha": 0.0,
+    "prediction_source": "LastCloseBaseline",
+    "training_cutoff": "2026-10-30",
+    "last_input_date": "2026-10-30",
+    "last_known_close": 28.079999923706055,
+    "checkpoint": "",
+    "checkpoint_sha256": "",
+    "epoch_reference_median": null,
+    "predicted_dates": [
+      "2026-11-02",
+      "2026-11-03",
+      "2026-11-04",
+      "2026-11-05",
+      "2026-11-06"
+    ],
+    "source_csv_sha256": "1494c97ba87761508af0623a533ff57d34b7044867ce27e054dd352aba1e1762"
+  },
+  {
+    "stock": "sz.000983",
+    "method": "LastCloseBaseline",
+    "model": "LastCloseBaseline",
+    "alpha": 0.0,
+    "prediction_source": "LastCloseBaseline",
+    "training_cutoff": "2026-10-30",
+    "last_input_date": "2026-10-30",
+    "last_known_close": 6.489999771118164,
+    "checkpoint": "",
+    "checkpoint_sha256": "",
+    "epoch_reference_median": null,
+    "predicted_dates": [
+      "2026-11-02",
+      "2026-11-03",
+      "2026-11-04",
+      "2026-11-05",
+      "2026-11-06"
+    ],
+    "source_csv_sha256": "1145769484f8c965bc8503be1f256eef441d16fbaa3c027c13d8b5f09f44d74f"
+  }
+]

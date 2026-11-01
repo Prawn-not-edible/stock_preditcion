@@ -1,0 +1,30 @@
+fatal: not a git repository (or any parent up to mount point /root)
+Stopping at filesystem boundary (GIT_DISCOVERY_ACROSS_FILESYSTEM not set).
+development sh.601088 DLinear origin_02: best_epoch=30 train_mse=0.0010604927 val_mse=0.00045378377 runtime=1.60s
+development sh.601088 DLinear origin_04: best_epoch=16 train_mse=0.00097467462 val_mse=0.0013824433 runtime=1.17s
+development sh.601088 DLinear origin_06: best_epoch=13 train_mse=0.00088893039 val_mse=0.00037850117 runtime=1.30s
+development sh.601088 iTransformer origin_02: best_epoch=12 train_mse=0.00074802768 val_mse=0.0005527321 runtime=2.20s
+development sh.601088 iTransformer origin_04: best_epoch=9 train_mse=0.00079102807 val_mse=0.0020085613 runtime=2.93s
+development sh.601088 iTransformer origin_06: best_epoch=4 train_mse=0.00078720776 val_mse=0.00053671025 runtime=3.95s
+development sh.601088 TimeXer origin_02: best_epoch=8 train_mse=0.0018525346 val_mse=0.00058225333 runtime=3.57s
+development sh.601088 TimeXer origin_04: best_epoch=7 train_mse=0.0015754602 val_mse=0.00192728 runtime=5.52s
+development sh.601088 TimeXer origin_06: best_epoch=8 train_mse=0.0014455867 val_mse=0.00051160374 runtime=7.71s
+development sh.601225 DLinear origin_02: best_epoch=38 train_mse=0.0019616908 val_mse=0.00077289334 runtime=1.77s
+development sh.601225 DLinear origin_04: best_epoch=19 train_mse=0.0016377956 val_mse=0.0018850174 runtime=1.66s
+development sh.601225 DLinear origin_06: best_epoch=15 train_mse=0.0014704014 val_mse=0.00069353056 runtime=1.87s
+development sh.601225 iTransformer origin_02: best_epoch=11 train_mse=0.0017079838 val_mse=0.0010142992 runtime=2.52s
+development sh.601225 iTransformer origin_04: best_epoch=2 train_mse=0.0017758264 val_mse=0.0025018243 runtime=2.07s
+development sh.601225 iTransformer origin_06: best_epoch=8 train_mse=0.0012682747 val_mse=0.0011624822 runtime=4.75s
+development sh.601225 TimeXer origin_02: best_epoch=27 train_mse=0.0044996943 val_mse=0.00096209473 runtime=6.98s
+development sh.601225 TimeXer origin_04: best_epoch=9 train_mse=0.0033042641 val_mse=0.0024190958 runtime=4.96s
+development sh.601225 TimeXer origin_06: best_epoch=7 train_mse=0.0030404268 val_mse=0.00090378417 runtime=6.94s
+development sz.000983 DLinear origin_02: best_epoch=34 train_mse=0.0017322221 val_mse=0.00069632688 runtime=1.48s
+development sz.000983 DLinear origin_04: best_epoch=16 train_mse=0.0019345703 val_mse=0.0042259589 runtime=1.39s
+development sz.000983 DLinear origin_06: best_epoch=13 train_mse=0.001844406 val_mse=0.0010708327 runtime=1.70s
+development sz.000983 iTransformer origin_02: best_epoch=18 train_mse=0.0012166446 val_mse=0.00086070924 runtime=3.10s
+development sz.000983 iTransformer origin_04: best_epoch=11 train_mse=0.0015637297 val_mse=0.0058120814 runtime=3.72s
+development sz.000983 iTransformer origin_06: best_epoch=12 train_mse=0.0013998622 val_mse=0.0014684555 runtime=5.15s
+development sz.000983 TimeXer origin_02: best_epoch=18 train_mse=0.0032055878 val_mse=0.00087341668 runtime=4.37s
+development sz.000983 TimeXer origin_04: best_epoch=17 train_mse=0.003228542 val_mse=0.0052606277 runtime=7.37s
+development sz.000983 TimeXer origin_06: best_epoch=13 train_mse=0.0029925912 val_mse=0.0012619865 runtime=9.23s
+Development complete: 27 fits; locked 9 stock-model alphas

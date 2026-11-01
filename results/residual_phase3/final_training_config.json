@@ -1,0 +1,38 @@
+{
+  "student_id": "10235102458",
+  "as_of": "2026-10-30",
+  "optimizer": "Adam",
+  "learning_rate": 0.001,
+  "epoch_cap": 50,
+  "batch_size": 128,
+  "early_stopping_patience": 7,
+  "seed": 2026,
+  "seq_len": 60,
+  "pred_len": 5,
+  "features_order": [
+    "high",
+    "low",
+    "close",
+    "volume",
+    "amount",
+    "open"
+  ],
+  "features_mode": "MS",
+  "models": {
+    "sh.601088": {
+      "method": "LastCloseBaseline",
+      "model": "LastCloseBaseline",
+      "alpha": 0.0
+    },
+    "sh.601225": {
+      "method": "LastCloseBaseline",
+      "model": "LastCloseBaseline",
+      "alpha": 0.0
+    },
+    "sz.000983": {
+      "method": "LastCloseBaseline",
+      "model": "LastCloseBaseline",
+      "alpha": 0.0
+    }
+  }
+}

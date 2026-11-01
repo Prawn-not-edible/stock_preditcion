@@ -1,0 +1,46 @@
+{
+  "all_valid": true,
+  "formal_filenames": true,
+  "checked_on": "2026-11-01",
+  "files": [
+    {
+      "file": "D:\\文件下载\\数据挖掘\\作业1 股票预测\\stock_preditcion\\results\\residual_phase3\\final\\submission\\10235102458_prediction_601088_SH.csv",
+      "rows": 5,
+      "dates": [
+        "2026-11-02",
+        "2026-11-03",
+        "2026-11-04",
+        "2026-11-05",
+        "2026-11-06"
+      ],
+      "valid": true,
+      "sha256": "9b119d6314cb07c57fa65761576e9eb17a0c7158eae73eed96303d10b1714cf1"
+    },
+    {
+      "file": "D:\\文件下载\\数据挖掘\\作业1 股票预测\\stock_preditcion\\results\\residual_phase3\\final\\submission\\10235102458_prediction_601225_SH.csv",
+      "rows": 5,
+      "dates": [
+        "2026-11-02",
+        "2026-11-03",
+        "2026-11-04",
+        "2026-11-05",
+        "2026-11-06"
+      ],
+      "valid": true,
+      "sha256": "977b1e0fb109f616e8aaa48056011209057b48900f6aa77e712e0136978aa8e6"
+    },
+    {
+      "file": "D:\\文件下载\\数据挖掘\\作业1 股票预测\\stock_preditcion\\results\\residual_phase3\\final\\submission\\10235102458_prediction_000983_SZ.csv",
+      "rows": 5,
+      "dates": [
+        "2026-11-02",
+        "2026-11-03",
+        "2026-11-04",
+        "2026-11-05",
+        "2026-11-06"
+      ],
+      "valid": true,
+      "sha256": "57f0a11bd5a0ca9b8b764604d0111866e0b03b618169d42dc41416176d5be9ac"
+    }
+  ]
+}

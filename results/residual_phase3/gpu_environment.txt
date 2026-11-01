@@ -1,0 +1,9 @@
+Sun Nov  1 09:25:33 UTC 2026
+name, driver_version, memory.total [MiB]
+NVIDIA GeForce RTX 3080 Ti, 580.76.05, 12288 MiB
+Python environment: torch 2.8.0+cu128 CUDA available True pandas 3.1.0 numpy 2.3.2
+               total        used        free      shared  buff/cache   available
+Mem:           440Gi        18Gi        17Gi       4.1Gi       404Gi       415Gi
+Swap:             0B          0B          0B
+Filesystem      Size  Used Avail Use% Mounted on
+/dev/sdb         50G  196M   50G   1% /root/autodl-tmp

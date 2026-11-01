@@ -1,0 +1,18 @@
+{
+  "phase2_v0_pairing": [
+    {
+      "file": "results\\residual_phase3\\development_comparison.csv",
+      "groups_checked": 27,
+      "dates_and_actuals_equal": true
+    },
+    {
+      "file": "results\\residual_phase3\\recent_comparison.csv",
+      "groups_checked": 72,
+      "dates_and_actuals_equal": true
+    }
+  ],
+  "recent_windows_per_stock_model": 8,
+  "all_expected_recent_windows": true,
+  "alpha_zero_is_last_close_baseline": true,
+  "recent_is_fast_model_selection_data_not_independent_final_test": true
+}

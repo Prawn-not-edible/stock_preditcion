@@ -1,0 +1,67 @@
+{
+  "phase": 3,
+  "mode": "development",
+  "code_commit": "694086b04545f9e832f2546e6ae6916bf2405a8d",
+  "as_of": "2026-10-30",
+  "stocks": [
+    "sh.601088",
+    "sh.601225",
+    "sz.000983"
+  ],
+  "processed_sha256": {
+    "data/processed/sh_601088.csv": "0149b80141cc2d487f7d265bc68d57eaadcd9861561dbd311edae190d0b98313",
+    "data/processed/sh_601225.csv": "1494c97ba87761508af0623a533ff57d34b7044867ce27e054dd352aba1e1762",
+    "data/processed/sz_000983.csv": "1145769484f8c965bc8503be1f256eef441d16fbaa3c027c13d8b5f09f44d74f"
+  },
+  "seq_len": 60,
+  "pred_len": 5,
+  "features_order": [
+    "high",
+    "low",
+    "close",
+    "volume",
+    "amount",
+    "open"
+  ],
+  "price_features": "historical price / close[origin-1] - 1",
+  "volume_amount_transform": "log1p, fit mean/std on raw[:train_end] only",
+  "target": "future_open / close[origin-1] - 1",
+  "alphas": [
+    0.0,
+    0.25,
+    0.5,
+    1.0
+  ],
+  "development_folds": [
+    "origin_02",
+    "origin_04",
+    "origin_06"
+  ],
+  "recent_holdout_tail_trading_days": 40,
+  "recent_windows_per_stock": 8,
+  "recent_retrain_period_trading_days": 20,
+  "recent_validation_trading_days": 126,
+  "epochs": 50,
+  "early_stopping_patience": 7,
+  "optimizer": "Adam",
+  "learning_rate": 0.001,
+  "batch_size": 128,
+  "seed": 2026,
+  "device": "cuda",
+  "cuda_float32_matmul_precision": "high",
+  "pin_memory": true,
+  "model_configs": {
+    "d_model": 128,
+    "d_ff": 256,
+    "e_layers": 2,
+    "n_heads": 4,
+    "dropout": 0.1,
+    "label_len": 30,
+    "features": "MS",
+    "use_norm": true
+  },
+  "phase2_v0_files": [
+    "/root/autodl-tmp/phase3-run/results/remote_gpu_run/results/metrics/development_windows.csv",
+    "/root/autodl-tmp/phase3-run/results/remote_gpu_run/results/metrics/recent_windows.csv"
+  ]
+}

@@ -1,0 +1,21 @@
+fatal: not a git repository (or any parent up to mount point /root)
+Stopping at filesystem boundary (GIT_DISCOVERY_ACROSS_FILESYSTEM not set).
+recent sh.601088 DLinear cycle=1: best_epoch=20 train_mse=0.00086372779 val_mse=0.00083145061 runtime=2.65s
+recent sh.601088 DLinear cycle=2: best_epoch=14 train_mse=0.00087340271 val_mse=0.00066161749 runtime=1.80s
+recent sh.601088 iTransformer cycle=1: best_epoch=6 train_mse=0.00071498784 val_mse=0.0013242522 runtime=4.48s
+recent sh.601088 iTransformer cycle=2: best_epoch=12 train_mse=0.00062316851 val_mse=0.0011601844 runtime=6.10s
+recent sh.601088 TimeXer cycle=1: best_epoch=8 train_mse=0.0014396009 val_mse=0.0013023516 runtime=8.34s
+recent sh.601088 TimeXer cycle=2: best_epoch=9 train_mse=0.0014126353 val_mse=0.0012242546 runtime=8.10s
+recent sh.601225 DLinear cycle=1: best_epoch=18 train_mse=0.0013955433 val_mse=0.0014072005 runtime=2.41s
+recent sh.601225 DLinear cycle=2: best_epoch=25 train_mse=0.0014053574 val_mse=0.0012648286 runtime=2.75s
+recent sh.601225 iTransformer cycle=1: best_epoch=11 train_mse=0.0011191069 val_mse=0.0017839848 runtime=6.05s
+recent sh.601225 iTransformer cycle=2: best_epoch=6 train_mse=0.0013357508 val_mse=0.0018855035 runtime=4.47s
+recent sh.601225 TimeXer cycle=1: best_epoch=16 train_mse=0.0025878068 val_mse=0.0015007413 runtime=12.24s
+recent sh.601225 TimeXer cycle=2: best_epoch=14 train_mse=0.0028745441 val_mse=0.0013694986 runtime=10.95s
+recent sz.000983 DLinear cycle=1: best_epoch=12 train_mse=0.0018209089 val_mse=0.0013315115 runtime=1.97s
+recent sz.000983 DLinear cycle=2: best_epoch=24 train_mse=0.0018027449 val_mse=0.0012357523 runtime=3.01s
+recent sz.000983 iTransformer cycle=1: best_epoch=9 train_mse=0.0014743938 val_mse=0.0016435887 runtime=5.60s
+recent sz.000983 iTransformer cycle=2: best_epoch=14 train_mse=0.0012862909 val_mse=0.0015577649 runtime=7.52s
+recent sz.000983 TimeXer cycle=1: best_epoch=10 train_mse=0.0031450095 val_mse=0.0016097085 runtime=9.41s
+recent sz.000983 TimeXer cycle=2: best_epoch=8 train_mse=0.0032087321 val_mse=0.0016681352 runtime=8.08s
+Recent complete: 18 fits; 72 residual windows

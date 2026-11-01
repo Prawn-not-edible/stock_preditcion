@@ -55,3 +55,5 @@ python scripts/validate_submission.py --student-id 10235102458 \
 模型只有在近期 mean NMSE 至少改善 5%、median NMSE 低于 baseline，并在至少 5/8 窗口优于 baseline 时才允许入选；否则默认 Last Close Baseline，并在报告中指出样本量有限。近期 40 日是快速模型选择集，不是独立最终测试集。
 
 预测导出/校验支持指定 metadata 和 report 路径，以便 Phase 3 生成文件留在本目录，不会改写 Phase 2 的正式 CSV 或校验报告。
+
+本轮真实 GPU 运行结论、V0/V1/V2 具体指标、保守选模判断和正式预测见 [`results/residual_phase3/FINAL_REPORT.md`](../results/residual_phase3/FINAL_REPORT.md)。
