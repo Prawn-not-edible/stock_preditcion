@@ -1,0 +1,23 @@
+{
+  "selection_basis": "development only; recent holdout not used",
+  "stocks": {
+    "sh.601088": {
+      "selected_model": "LastCloseBaseline",
+      "mean_nmse": 0.0011813883293833294,
+      "baseline_mean_nmse": 0.0011813883293833294,
+      "rule": "lowest development mean NMSE; choose LastCloseBaseline if all deep models are worse"
+    },
+    "sh.601225": {
+      "selected_model": "LastCloseBaseline",
+      "mean_nmse": 0.00044571324703956695,
+      "baseline_mean_nmse": 0.00044571324703956695,
+      "rule": "lowest development mean NMSE; choose LastCloseBaseline if all deep models are worse"
+    },
+    "sz.000983": {
+      "selected_model": "LastCloseBaseline",
+      "mean_nmse": 0.0005680763381982805,
+      "baseline_mean_nmse": 0.0005680763381982805,
+      "rule": "lowest development mean NMSE; choose LastCloseBaseline if all deep models are worse"
+    }
+  }
+}

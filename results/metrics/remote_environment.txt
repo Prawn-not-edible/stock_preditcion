@@ -1,0 +1,26 @@
+development_and_final_code_commit=9b9807dc6e959c3e0819253603afd50f9651f5dd
+recent_telemetry_code_commit=74af4251d7078675f6496008b4873a04744c9553
+analysis_code_commit=eef42e98ced4a92e1b7c6a08039ba754f31ac09e
+raw_csv_sha256:
+92b9e9d76e39a27c08c06788fae8daeb0e1c3e42e5111451d29157a582974f1c  data/raw/sh_601088.csv
+53c06cf9a2ca3d00569d495126acc544203372199b717a45c98c7cec5aefbd92  data/raw/sh_601225.csv
+8bcb8848c705e9aeebfc9cee6bab473e2ef674d23b449637f66e249ee8c87d9d  data/raw/sz_000983.csv
+processed_csv_sha256:
+0fda62f4671c3776d2319ee6361d2074d82081be5b4cf982085ac33c277bbee1  data/processed/sh_601088.csv
+1c732349aef3a4079b03b9f022cc59900fac2cdd552668790e71f23e49df79a9  data/processed/sh_601225.csv
+7e9b92158b84f35cae49b74e60479aa733799afc4d4e8c95efda305b40d07479  data/processed/sz_000983.csv
+python_torch_cuda:
+3.12.3 | packaged by Anaconda, Inc. | (main, May  6 2024, 19:46:43) [GCC 11.2.0]
+torch 2.8.0+cu128 cuda_runtime 12.8 cuda_available True
+pandas 3.1.0 baostock 00.9.40
+gpu NVIDIA GeForce RTX 3080 Ti
+gpu_driver:
+NVIDIA GeForce RTX 3080 Ti, 580.76.05, 12288 MiB
+memory_and_disks:
+               total        used        free      shared  buff/cache   available
+Mem:           440Gi        19Gi       6.2Gi       4.1Gi       414Gi       413Gi
+Swap:             0B          0B          0B
+Filesystem      Size  Used Avail Use% Mounted on
+overlay          30G   65M   30G   1% /
+/dev/sdb         50G  337M   50G   1% /root/autodl-tmp
+recent_window_cutoff_metadata_fix_commit=1caa9debd67e7ab06081b3f48b174729fafdd4fd

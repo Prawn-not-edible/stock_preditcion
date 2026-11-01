@@ -1,0 +1,46 @@
+{
+  "all_valid": true,
+  "formal_filenames": false,
+  "checked_on": "2026-11-01",
+  "files": [
+    {
+      "file": "/root/autodl-tmp/stock_preditcion/results/predictions/draft/sh_601088_draft_preview.csv",
+      "rows": 5,
+      "dates": [
+        "2026-11-02",
+        "2026-11-03",
+        "2026-11-04",
+        "2026-11-05",
+        "2026-11-06"
+      ],
+      "valid": true,
+      "sha256": "9b119d6314cb07c57fa65761576e9eb17a0c7158eae73eed96303d10b1714cf1"
+    },
+    {
+      "file": "/root/autodl-tmp/stock_preditcion/results/predictions/draft/sh_601225_draft_preview.csv",
+      "rows": 5,
+      "dates": [
+        "2026-11-02",
+        "2026-11-03",
+        "2026-11-04",
+        "2026-11-05",
+        "2026-11-06"
+      ],
+      "valid": true,
+      "sha256": "977b1e0fb109f616e8aaa48056011209057b48900f6aa77e712e0136978aa8e6"
+    },
+    {
+      "file": "/root/autodl-tmp/stock_preditcion/results/predictions/draft/sz_000983_draft_preview.csv",
+      "rows": 5,
+      "dates": [
+        "2026-11-02",
+        "2026-11-03",
+        "2026-11-04",
+        "2026-11-05",
+        "2026-11-06"
+      ],
+      "valid": true,
+      "sha256": "57f0a11bd5a0ca9b8b764604d0111866e0b03b618169d42dc41416176d5be9ac"
+    }
+  ]
+}

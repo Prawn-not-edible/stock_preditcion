@@ -1,0 +1,56 @@
+[
+  {
+    "stock": "sh.601088",
+    "model": "LastCloseBaseline",
+    "prediction_source": "LastCloseBaseline",
+    "training_cutoff": "2026-10-30",
+    "last_input_date": "2026-10-30",
+    "last_known_close": 51.9900016784668,
+    "source_csv_sha256": "0fda62f4671c3776d2319ee6361d2074d82081be5b4cf982085ac33c277bbee1",
+    "checkpoint": "",
+    "checkpoint_sha256": "",
+    "predicted_dates": [
+      "2026-11-02",
+      "2026-11-03",
+      "2026-11-04",
+      "2026-11-05",
+      "2026-11-06"
+    ]
+  },
+  {
+    "stock": "sh.601225",
+    "model": "LastCloseBaseline",
+    "prediction_source": "LastCloseBaseline",
+    "training_cutoff": "2026-10-30",
+    "last_input_date": "2026-10-30",
+    "last_known_close": 28.079999923706055,
+    "source_csv_sha256": "1c732349aef3a4079b03b9f022cc59900fac2cdd552668790e71f23e49df79a9",
+    "checkpoint": "",
+    "checkpoint_sha256": "",
+    "predicted_dates": [
+      "2026-11-02",
+      "2026-11-03",
+      "2026-11-04",
+      "2026-11-05",
+      "2026-11-06"
+    ]
+  },
+  {
+    "stock": "sz.000983",
+    "model": "LastCloseBaseline",
+    "prediction_source": "LastCloseBaseline",
+    "training_cutoff": "2026-10-30",
+    "last_input_date": "2026-10-30",
+    "last_known_close": 6.489999771118164,
+    "source_csv_sha256": "7e9b92158b84f35cae49b74e60479aa733799afc4d4e8c95efda305b40d07479",
+    "checkpoint": "",
+    "checkpoint_sha256": "",
+    "predicted_dates": [
+      "2026-11-02",
+      "2026-11-03",
+      "2026-11-04",
+      "2026-11-05",
+      "2026-11-06"
+    ]
+  }
+]
