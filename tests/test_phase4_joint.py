@@ -1,4 +1,5 @@
 import sys
+import tempfile
 import unittest
 from pathlib import Path
 
@@ -83,6 +84,19 @@ class MultiStockTimeIsolationTests(unittest.TestCase):
 
     def test_recent_refit_schedule_is_two_20_session_cycles(self):
         self.assertEqual([i // p4.RECENT_WINDOWS_PER_FIT for i in range(8)], [0] * 4 + [1] * 4)
+
+    def test_delisted_member_keeps_history_but_has_no_fake_validation_rows(self):
+        with tempfile.TemporaryDirectory() as temp:
+            old_path = Path(temp) / "old.csv"
+            self.df.iloc[:180].to_csv(old_path, index=False)
+            validation_start = self.df.date.iloc[250]
+            origin = self.df.date.iloc[380]
+            files = {"sh.600001": old_path, "sh.601088": self.path}
+            train = p4.MultiStockResidualDataset(files, list(files), validation_start)
+            val = p4.MultiStockResidualDataset(files, list(files), validation_start,
+                                              validation_start, origin)
+            self.assertIn("sh.600001", set(train.stock_ids))
+            self.assertNotIn("sh.600001", set(val.stock_ids))
 
 
 if __name__ == "__main__":

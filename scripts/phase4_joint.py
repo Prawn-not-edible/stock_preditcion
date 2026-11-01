@@ -144,8 +144,11 @@ class MultiStockResidualDataset(Dataset):
             else:
                 val_start = int(np.searchsorted(dates, validation_start, side="left"))
                 test_start = int(np.searchsorted(dates, origin_date, side="left"))
+                # A historically eligible stock may have delisted or ceased reporting
+                # before this origin. Keep its pre-cutoff training rows, but do not
+                # invent validation rows or let its empty post-cutoff range abort the pool.
                 if not (p3.SEQ_LEN < val_start < min(test_start, len(dates))):
-                    raise ValueError(f"invalid split for {stock}: train_end={val_start} test={test_start}")
+                    continue
                 split = val_start
                 # validation_start is the first known validation row; labels must end strictly before D.
                 origins = range(val_start, test_start - p3.PRED_LEN + 1)
