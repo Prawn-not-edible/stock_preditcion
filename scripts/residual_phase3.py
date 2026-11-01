@@ -705,7 +705,8 @@ def main() -> None:
     try:
         commit = subprocess.check_output(["git", "rev-parse", "HEAD"], cwd=ROOT, text=True).strip()
     except Exception:
-        commit = "unknown"
+        commit_file = ROOT / "UPDATE_COMMIT.txt"
+        commit = commit_file.read_text(encoding="utf-8").strip() if commit_file.exists() else "unknown"
     input_hashes = {}
     for stock_cfg in stock_configs():
         src = ROOT / "data/processed" / stock_cfg["output_file"]
