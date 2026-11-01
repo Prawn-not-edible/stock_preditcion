@@ -16,6 +16,15 @@ def main():
     dev=pd.read_csv(OUT/"development/joint_predictions.csv")
     recent=pd.read_csv(OUT/"recent_40d/joint_predictions.csv")
     if dev.empty or recent.empty: raise ValueError("development or recent predictions are empty")
+    pairing_counts={}
+    for stage,frame in (("development",dev),("recent_40d",recent)):
+      checked=0
+      for (stock,model,origin),group in frame.groupby(["stock","model","origin_date"]):
+        if set(group.pool)!={"P0","P1","P2"}: raise ValueError(f"incomplete {stage} pool pairing {stock} {model} {origin}")
+        if group.target_dates.nunique()!=1 or group.actual_open.nunique()!=1:
+          raise ValueError(f"{stage} date/actual Open mismatch {stock} {model} {origin}")
+        checked+=1
+      pairing_counts[stage]=checked
     # P0 alpha is the locked Phase 3 alpha; never retune P0 on Phase 4 dates.
     p3lock=json.loads((ROOT/"results/residual_phase3/locked_alphas.json").read_text(encoding="utf-8"))["stocks"]
     locks={}
@@ -41,6 +50,13 @@ def main():
         if set(group.pool)!={"P0","P1","P2"}: raise ValueError(f"incomplete pool pairing {stock} {model} {origin}")
         if group.target_dates.nunique()!=1 or group.actual_open.nunique()!=1:
             raise ValueError(f"date/actual Open mismatch {stock} {model} {origin}")
+    (OUT/"pool_audit/date_alignment_audit.json").write_text(json.dumps({
+      "status":"passed","development_comparison_groups":pairing_counts["development"],
+      "recent_comparison_groups":pairing_counts["recent_40d"],
+      "recent_windows":sorted(recent.origin_date.unique().tolist()),
+      "stocks":p4.TARGETS,"models":p4.MODELS,"pools":["P0","P1","P2"],
+      "checks":["identical five target dates","identical actual Open vectors","one row per pool/stock/model/origin after alpha lock"],
+      "recent_P0_source":"Phase 3 saved recent V1 window predictions with Phase 3 alpha locks"},ensure_ascii=False,indent=2),encoding="utf-8")
     baselines=[]
     for _,r in detail.drop_duplicates(["stock","origin_date"]).iterrows():
         actual=p3.parse_vec(r.actual_return); anchor=float(r.anchor_close); zero=np.zeros(5)

@@ -1,0 +1,6 @@
+{
+  "pool_audit_source_commit": "4ca13f952b844abd4bf5e64153c131d3c0b9b1af",
+  "joint_training_source_commit": "526d280a0ee4df26e539a846a4d4fd4026597c7f",
+  "analysis_and_final_prediction_source_commit": "a2ebc267131a6928a72c607b0e841257af7862c2",
+  "branch": "phase4-joint-training"
+}

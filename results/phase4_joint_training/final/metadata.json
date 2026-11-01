@@ -1,0 +1,65 @@
+[
+  {
+    "stock": "sh.601088",
+    "method": "LastCloseBaseline",
+    "model": "LastCloseBaseline",
+    "alpha": 0.0,
+    "prediction_source": "LastCloseBaseline",
+    "training_cutoff": "2026-10-30",
+    "last_input_date": "2026-10-30",
+    "last_known_close": 51.9900016784668,
+    "checkpoint": "",
+    "checkpoint_sha256": "",
+    "epoch_reference_median": null,
+    "predicted_dates": [
+      "2026-11-02",
+      "2026-11-03",
+      "2026-11-04",
+      "2026-11-05",
+      "2026-11-06"
+    ],
+    "source_csv_sha256": "0fda62f4671c3776d2319ee6361d2074d82081be5b4cf982085ac33c277bbee1"
+  },
+  {
+    "stock": "sh.601225",
+    "method": "LastCloseBaseline",
+    "model": "LastCloseBaseline",
+    "alpha": 0.0,
+    "prediction_source": "LastCloseBaseline",
+    "training_cutoff": "2026-10-30",
+    "last_input_date": "2026-10-30",
+    "last_known_close": 28.079999923706055,
+    "checkpoint": "",
+    "checkpoint_sha256": "",
+    "epoch_reference_median": null,
+    "predicted_dates": [
+      "2026-11-02",
+      "2026-11-03",
+      "2026-11-04",
+      "2026-11-05",
+      "2026-11-06"
+    ],
+    "source_csv_sha256": "1c732349aef3a4079b03b9f022cc59900fac2cdd552668790e71f23e49df79a9"
+  },
+  {
+    "stock": "sz.000983",
+    "method": "P2-Joint-Residual",
+    "model": "TimeXer",
+    "alpha": 0.5,
+    "prediction_source": "trained_model",
+    "training_cutoff": "2026-10-30",
+    "last_input_date": "2026-10-30",
+    "last_known_close": 6.489999771118164,
+    "checkpoint": "/root/autodl-tmp/phase3-run/results/phase4_joint_training/checkpoints/final_P2_TimeXer_2026-10-30.pt",
+    "checkpoint_sha256": "83d646a1c54b6d2651eea6142ce8fbcf3375e574c5c1613104897479337c6b21",
+    "epoch_reference_median": 12,
+    "predicted_dates": [
+      "2026-11-02",
+      "2026-11-03",
+      "2026-11-04",
+      "2026-11-05",
+      "2026-11-06"
+    ],
+    "source_csv_sha256": "7e9b92158b84f35cae49b74e60479aa733799afc4d4e8c95efda305b40d07479"
+  }
+]

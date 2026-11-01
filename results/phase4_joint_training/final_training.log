@@ -1,0 +1,20 @@
+final P2 TimeXer epoch=1/12 loss=0.004459672
+final P2 TimeXer epoch=2/12 loss=0.003562598
+final P2 TimeXer epoch=3/12 loss=0.003405675
+final P2 TimeXer epoch=4/12 loss=0.003348812
+final P2 TimeXer epoch=5/12 loss=0.003319446
+final P2 TimeXer epoch=6/12 loss=0.003277072
+final P2 TimeXer epoch=7/12 loss=0.003280016
+final P2 TimeXer epoch=8/12 loss=0.003237849
+final P2 TimeXer epoch=9/12 loss=0.003195723
+final P2 TimeXer epoch=10/12 loss=0.003158555
+final P2 TimeXer epoch=11/12 loss=0.003219042
+final P2 TimeXer epoch=12/12 loss=0.003121558
+{
+  "selected": [
+    "sz.000983"
+  ],
+  "checkpoint_sha256": "83d646a1c54b6d2651eea6142ce8fbcf3375e574c5c1613104897479337c6b21",
+  "prediction_details": "/root/autodl-tmp/phase3-run/results/phase4_joint_training/final/prediction_details.csv",
+  "runtime_seconds": 54.98756170272827
+}

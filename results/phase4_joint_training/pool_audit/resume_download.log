@@ -1,0 +1,37 @@
+login success!
+logout success!
+login success!
+sh.600121: 3095 valid rows; 22 suspended; jumps 0
+sh.600123: 3117 valid rows; 0 suspended; jumps 1
+sh.600157: 2822 valid rows; 295 suspended; jumps 2
+sh.600188: 3115 valid rows; 2 suspended; jumps 2
+sh.600256: 3088 valid rows; 29 suspended; jumps 0
+sh.600348: 3117 valid rows; 0 suspended; jumps 1
+sh.600395: 3067 valid rows; 50 suspended; jumps 0
+sh.600397: 3059 valid rows; 58 suspended; jumps 0
+sh.600403: 3113 valid rows; 4 suspended; jumps 0
+sh.600508: 3117 valid rows; 0 suspended; jumps 1
+sh.600546: 3067 valid rows; 50 suspended; jumps 0
+sh.600714: 2933 valid rows; 184 suspended; jumps 0
+sh.600740: 2960 valid rows; 157 suspended; jumps 2
+sh.600758: 2985 valid rows; 132 suspended; jumps 0
+sh.600792: 3087 valid rows; 30 suspended; jumps 1
+sh.600925: 869 valid rows; 0 suspended; jumps 0
+sh.600971: 3117 valid rows; 0 suspended; jumps 1
+sh.600985: 2961 valid rows; 156 suspended; jumps 1
+sh.601001: 3024 valid rows; 93 suspended; jumps 0
+sh.601088: 3043 valid rows; 74 suspended; jumps 0
+sh.601101: 3011 valid rows; 106 suspended; jumps 1
+sh.601225: 3099 valid rows; 0 suspended; jumps 0
+sh.601666: 3117 valid rows; 0 suspended; jumps 0
+sh.601699: 3098 valid rows; 19 suspended; jumps 1
+sh.601898: 3117 valid rows; 0 suspended; jumps 0
+sh.601918: 3093 valid rows; 24 suspended; jumps 0
+sz.000552: 3091 valid rows; 26 suspended; jumps 1
+sz.000571: 2870 valid rows; 247 suspended; jumps 0
+sz.000780: 1921 valid rows; 44 suspended; jumps 0
+sz.000937: 3117 valid rows; 0 suspended; jumps 1
+sz.000983: 3107 valid rows; 10 suspended; jumps 1
+sz.002128: 2991 valid rows; 126 suspended; jumps 0
+logout success!
+pool securities=32, processed=32

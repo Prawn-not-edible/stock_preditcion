@@ -1,0 +1,20 @@
+login success!
+query industry snapshot as-of 2019-07-01
+industry snapshot 2019-07-01: 3733 rows; fields=['updateDate', 'code', 'code_name', 'industry', 'industryClassification']
+query industry snapshot as-of 2022-07-01
+industry snapshot 2022-07-01: 4886 rows; fields=['updateDate', 'code', 'code_name', 'industry', 'industryClassification']
+query industry snapshot as-of 2025-07-01
+industry snapshot 2025-07-01: 5452 rows; fields=['updateDate', 'code', 'code_name', 'industry', 'industryClassification']
+query industry snapshot as-of 2026-08-28
+industry snapshot 2026-08-28: 5545 rows; fields=['updateDate', 'code', 'code_name', 'industry', 'industryClassification']
+query industry snapshot as-of 2026-10-30
+industry snapshot 2026-10-30: 5561 rows; fields=['updateDate', 'code', 'code_name', 'industry', 'industryClassification']
+stock basic candidates 20/54
+stock basic candidates 40/54
+logout success!
+login success!
+sh.601088: 3043 valid rows; 74 suspended; jumps 0
+sh.601225: 3099 valid rows; 0 suspended; jumps 0
+sz.000983: 3107 valid rows; 10 suspended; jumps 1
+logout success!
+pool securities=3, processed=3

@@ -72,10 +72,14 @@ Phase 3 的完整分析见 [`results/residual_phase3/FINAL_REPORT.md`](results/r
 
 ### Phase 4：煤炭行业多股票联合 Residual 训练
 
-实验代码已在 `phase4-joint-training` 分支实现，复用 Phase 3 的 Residual 架构与目标，比较 P0 单股训练、P1 三目标股联合训练和 P2 按预测日期之前行业分类生成的煤炭股池联合训练。新增多股票 Dataset 保持每只股票序列独立，并采用逐股票训练期成交量/额标准化及均衡采样。近期窗口与 Phase 3 P0 完全配对，alpha 在历史开发窗口锁定。
+已在 `phase4-joint-training` 分支完成 BaoStock 煤炭池审计、CPU smoke/10 项离线测试、45 次历史开发拟合、12 次近期共享模型拟合和最终入选模型训练。实验比较 P0 单股训练、P1 三只目标股联合训练、P2 按预测日期之前分类构造的煤炭股池联合训练；近期窗口与 Phase 3 P0 严格按目标日期及实际 Open 配对。近期数据是快速模型比较集，不是独立测试集。
 
-煤炭池 BaoStock 查询、数据清洗与正式 GPU 训练正在进行；本分支 README 与 `results/phase4_joint_training/EXPERIMENT_REPORT.md` 将以实际完成的查询、训练和对齐审计更新进度。原始行情与 checkpoint 不推送，公开代码、行业/数据审计及评价结果归档于 Phase 4 分支。
+BaoStock 查询得到 32 只不同沪深 A 股煤炭/煤焦相关股票，32 只均有足够行情构造输入和标签，共 94,388 条有效行情记录、1,938 条停牌记录。P2 按历史分类时点分别纳入 26–28 只；最终预测训练使用 2026-10-30 时点的 28 只。明确披露 BaoStock 历史行业接口对已退市股票可能不完整，存在幸存者偏差。原始与处理行情、池成员快照和每股审计摘要均归档在 `data/coal_pool/`、`data/pool_manifest.csv` 与 `docs/COAL_POOL_AUDIT.md`。
+
+为缩短煤炭池训练耗时，GPU 批次由 Phase 3 的 128 调为 512；所有 P0/P1/P2 共用该设置，模型架构、Residual 目标、Adam、学习率、随机种子、Early Stopping 规则和窗口长度不变。P2 TimeXer 在山西焦煤上的锁定 Alpha=0.5，近期 Mean NMSE 为 0.00058646，较 Last Close 的 0.00068283 改善 14.1%，Median NMSE 由 0.00056086 降至 0.00050587，8 个窗口中 6 个胜过 Baseline。它通过本轮保守规则；证据仍来自已用于开发的近期窗口。中国神华与陕西煤业没有联合候选达到门槛，继续采用 Phase 3 选择的 Last Close Baseline。
+
+最终使用截至 2026-10-30 的 28 只煤炭股历史数据训练 P2 TimeXer 12 个 epoch，仅将通过规则的山西焦煤预测更新到 Phase 4 独立目录；中国神华和陕西煤业继续使用 Phase 3 Baseline。Phase 4 三份 CSV 均验证通过，Phase 3/Phase 2 原始结果未覆盖。训练代码、完整逐窗口结果、检查点哈希、配置、数据和审计见本分支 `results/phase4_joint_training/`；大型 checkpoint 保留在远端 GPU 环境，不提交 GitHub。
 
 ## GitHub 同步约定
 
-实验代码、数据审计、指标和文档通过阶段分支归档；提交时只暂存本轮相关文件。原始行情公开许可未确认前保留在本地，不推送。模型 checkpoint 不上传 GitHub。详见 `docs/GIT_WORKFLOW.md`。
+实验代码、可公开的 BaoStock 行情、数据审计、指标和文档通过阶段分支归档；提交时只暂存本轮相关文件。凭据与模型 checkpoint 不上传 GitHub。详见 `docs/GIT_WORKFLOW.md`。

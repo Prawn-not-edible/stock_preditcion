@@ -1,0 +1,25 @@
+{
+  "as_of": "2026-10-30",
+  "recent_windows": 8,
+  "not_independent_test": true,
+  "stocks": {
+    "sh.601088": {
+      "pool": "Phase3-Prediction",
+      "model": "Phase3-selected model or Last Close as recorded in Phase 3",
+      "alpha": null,
+      "reason": "No joint candidate met >=5% mean improvement vs Baseline and P0, better median NMSE than both, and >=5/8 Baseline wins."
+    },
+    "sh.601225": {
+      "pool": "Phase3-Prediction",
+      "model": "Phase3-selected model or Last Close as recorded in Phase 3",
+      "alpha": null,
+      "reason": "No joint candidate met >=5% mean improvement vs Baseline and P0, better median NMSE than both, and >=5/8 Baseline wins."
+    },
+    "sz.000983": {
+      "pool": "P2",
+      "model": "TimeXer",
+      "alpha": 0.5,
+      "reason": "Met conservative joint selection rule."
+    }
+  }
+}

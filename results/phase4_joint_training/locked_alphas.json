@@ -1,0 +1,191 @@
+[
+  {
+    "pool": "P1",
+    "stock": "sh.601088",
+    "model": "DLinear",
+    "alpha": 0.5,
+    "selection_source": "Phase 4 historical development windows"
+  },
+  {
+    "pool": "P1",
+    "stock": "sh.601088",
+    "model": "TimeXer",
+    "alpha": 0.0,
+    "selection_source": "Phase 4 historical development windows"
+  },
+  {
+    "pool": "P1",
+    "stock": "sh.601088",
+    "model": "iTransformer",
+    "alpha": 0.5,
+    "selection_source": "Phase 4 historical development windows"
+  },
+  {
+    "pool": "P1",
+    "stock": "sh.601225",
+    "model": "DLinear",
+    "alpha": 0.0,
+    "selection_source": "Phase 4 historical development windows"
+  },
+  {
+    "pool": "P1",
+    "stock": "sh.601225",
+    "model": "TimeXer",
+    "alpha": 0.0,
+    "selection_source": "Phase 4 historical development windows"
+  },
+  {
+    "pool": "P1",
+    "stock": "sh.601225",
+    "model": "iTransformer",
+    "alpha": 1.0,
+    "selection_source": "Phase 4 historical development windows"
+  },
+  {
+    "pool": "P1",
+    "stock": "sz.000983",
+    "model": "DLinear",
+    "alpha": 0.0,
+    "selection_source": "Phase 4 historical development windows"
+  },
+  {
+    "pool": "P1",
+    "stock": "sz.000983",
+    "model": "TimeXer",
+    "alpha": 0.25,
+    "selection_source": "Phase 4 historical development windows"
+  },
+  {
+    "pool": "P1",
+    "stock": "sz.000983",
+    "model": "iTransformer",
+    "alpha": 0.0,
+    "selection_source": "Phase 4 historical development windows"
+  },
+  {
+    "pool": "P2",
+    "stock": "sh.601088",
+    "model": "DLinear",
+    "alpha": 0.25,
+    "selection_source": "Phase 4 historical development windows"
+  },
+  {
+    "pool": "P2",
+    "stock": "sh.601088",
+    "model": "TimeXer",
+    "alpha": 0.0,
+    "selection_source": "Phase 4 historical development windows"
+  },
+  {
+    "pool": "P2",
+    "stock": "sh.601088",
+    "model": "iTransformer",
+    "alpha": 0.0,
+    "selection_source": "Phase 4 historical development windows"
+  },
+  {
+    "pool": "P2",
+    "stock": "sh.601225",
+    "model": "DLinear",
+    "alpha": 0.0,
+    "selection_source": "Phase 4 historical development windows"
+  },
+  {
+    "pool": "P2",
+    "stock": "sh.601225",
+    "model": "TimeXer",
+    "alpha": 0.0,
+    "selection_source": "Phase 4 historical development windows"
+  },
+  {
+    "pool": "P2",
+    "stock": "sh.601225",
+    "model": "iTransformer",
+    "alpha": 0.0,
+    "selection_source": "Phase 4 historical development windows"
+  },
+  {
+    "pool": "P2",
+    "stock": "sz.000983",
+    "model": "DLinear",
+    "alpha": 0.0,
+    "selection_source": "Phase 4 historical development windows"
+  },
+  {
+    "pool": "P2",
+    "stock": "sz.000983",
+    "model": "TimeXer",
+    "alpha": 0.5,
+    "selection_source": "Phase 4 historical development windows"
+  },
+  {
+    "pool": "P2",
+    "stock": "sz.000983",
+    "model": "iTransformer",
+    "alpha": 0.0,
+    "selection_source": "Phase 4 historical development windows"
+  },
+  {
+    "pool": "P0",
+    "stock": "sh.601088",
+    "model": "DLinear",
+    "alpha": 1.0,
+    "selection_source": "Phase 3 development lock"
+  },
+  {
+    "pool": "P0",
+    "stock": "sh.601088",
+    "model": "iTransformer",
+    "alpha": 0.5,
+    "selection_source": "Phase 3 development lock"
+  },
+  {
+    "pool": "P0",
+    "stock": "sh.601088",
+    "model": "TimeXer",
+    "alpha": 0.5,
+    "selection_source": "Phase 3 development lock"
+  },
+  {
+    "pool": "P0",
+    "stock": "sh.601225",
+    "model": "DLinear",
+    "alpha": 0.0,
+    "selection_source": "Phase 3 development lock"
+  },
+  {
+    "pool": "P0",
+    "stock": "sh.601225",
+    "model": "iTransformer",
+    "alpha": 0.0,
+    "selection_source": "Phase 3 development lock"
+  },
+  {
+    "pool": "P0",
+    "stock": "sh.601225",
+    "model": "TimeXer",
+    "alpha": 0.0,
+    "selection_source": "Phase 3 development lock"
+  },
+  {
+    "pool": "P0",
+    "stock": "sz.000983",
+    "model": "DLinear",
+    "alpha": 0.0,
+    "selection_source": "Phase 3 development lock"
+  },
+  {
+    "pool": "P0",
+    "stock": "sz.000983",
+    "model": "iTransformer",
+    "alpha": 0.0,
+    "selection_source": "Phase 3 development lock"
+  },
+  {
+    "pool": "P0",
+    "stock": "sz.000983",
+    "model": "TimeXer",
+    "alpha": 0.0,
+    "selection_source": "Phase 3 development lock"
+  }
+]

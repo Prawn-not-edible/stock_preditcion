@@ -1,0 +1,36 @@
+{
+  "status": "passed",
+  "development_comparison_groups": 27,
+  "recent_comparison_groups": 72,
+  "recent_windows": [
+    "2026-08-28",
+    "2026-09-04",
+    "2026-09-11",
+    "2026-09-18",
+    "2026-09-28",
+    "2026-10-12",
+    "2026-10-19",
+    "2026-10-26"
+  ],
+  "stocks": [
+    "sh.601088",
+    "sh.601225",
+    "sz.000983"
+  ],
+  "models": [
+    "DLinear",
+    "iTransformer",
+    "TimeXer"
+  ],
+  "pools": [
+    "P0",
+    "P1",
+    "P2"
+  ],
+  "checks": [
+    "identical five target dates",
+    "identical actual Open vectors",
+    "one row per pool/stock/model/origin after alpha lock"
+  ],
+  "recent_P0_source": "Phase 3 saved recent V1 window predictions with Phase 3 alpha locks"
+}
